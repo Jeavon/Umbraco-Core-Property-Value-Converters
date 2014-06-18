@@ -1,0 +1,38 @@
+﻿@inherits UmbracoTemplatePage
+@{
+    Layout = null;
+}
+
+@{
+    IEnumerable<IPublishedContent> typedMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("mntpFeaturePickerXML");
+    foreach (IPublishedContent item in typedMultiNodeTreePicker)
+    {
+        <p>@item.Name</p>
+    }
+}
+
+
+@{
+    var dynamicMultiNodeTreePicker = CurrentPage.mntpFeaturePickerXML;
+    foreach (var item in dynamicMultiNodeTreePicker)
+    {
+        <p>@item.Name</p>
+    }
+}
+
+@{
+    IEnumerable<IPublishedContent> csvMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("mntpFeaturePickerCSV");
+    foreach (IPublishedContent item in csvMultiNodeTreePicker)
+    {
+        <p>@item.Name</p>
+    }
+}
+
+
+@{
+    var dynamicCsvMultiNodeTreePicker = CurrentPage.mntpFeaturePickerCSV;
+    foreach (var item in dynamicCsvMultiNodeTreePicker)
+    {
+        <p>@item.Name</p>
+    }
+}

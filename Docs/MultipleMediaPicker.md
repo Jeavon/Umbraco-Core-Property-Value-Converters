@@ -5,7 +5,8 @@
 `Returns: IEnumerable<IPublishedContent>` or `IPublishedContent`
 
 This converter returns a single item if the "Pick multiple items" data type setting is disabled or a collection if it is enabled.
-Ensure this setting is populated by either checking or checking and unchecking as there is currently a bug that means by default it is not. More info on the bug [here](http://issues.umbraco.org/issue/U4-4626)
+
+![](images/MultipleMediaPicker.png)
 
 ## Typed Example (multiple enabled): ##
 

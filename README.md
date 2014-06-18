@@ -2,7 +2,7 @@
 
 ![](PropertyValueConverters.png)
 
-Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters](http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters)
+Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters](http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters)
 
 Once installed you cannot access the original raw value of the property by using `Model.Content.GetPropertyValue("propertyAlias")` however you can access it by using  `Model.Content.GetProperty("propertyAlias").Value.ToString()`
 

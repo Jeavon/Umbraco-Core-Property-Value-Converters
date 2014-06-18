@@ -1,6 +1,6 @@
-# Media Picker #
+# Multiple Media Picker #
 
-`Alias: Umbraco.MediaPicker`
+`Alias: Umbraco.MultipleMediaPicker`
 `Returns: IEnumerable<IPublishedContent>` or `IPublishedContent`
 
 This converter returns a single item if the "Pick multiple items" data type setting is disabled or a collection if it is enabled.

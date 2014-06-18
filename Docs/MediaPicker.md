@@ -1,4 +1,4 @@
-# Media Picker #
+# Legacy Media Picker #
 
 `Alias: Umbraco.MediaPicker`
 `Returns: IPublishedContent`

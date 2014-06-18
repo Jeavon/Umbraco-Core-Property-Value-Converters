@@ -5,7 +5,7 @@
 			<name>Umbraco Core Property Value Converters</name>
 			<version>0.0.0</version>
 			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
-			<url>http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters</url>
+			<url>http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters</url>
 			<requirements>
 				<major>0</major>
 				<minor>0</minor>
@@ -16,8 +16,9 @@
 			<name>The Umbraco Community</name>
 			<website>http://our.umbraco.org</website>
 		</author>
-		<readme><![CDATA[
-		Visit https://github.com/Jeavon/Umbraco-Core-Property-Editor-Converters-Docs for information on how to use this package
+		<readme>
+      <![CDATA[
+		Visit https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters/blob/v2/README.md for information on how to use this package
 		]]></readme>
 	</info>
 

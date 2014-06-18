@@ -1,28 +1,15 @@
-# Umbraco Core Property Editor Converters #
+# Umbraco Core Property Value Converters v2#
 
-Documentation: [https://github.com/Jeavon/Umbraco-Core-Property-Editor-Converters-Docs](https://github.com/Jeavon/Umbraco-Core-Property-Editor-Converters-Docs)
+Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters](http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters)
 
-Source Code: [https://bitbucket.org/jeavon/umbraco-core-property-editor-converters/overview](https://bitbucket.org/jeavon/umbraco-core-property-editor-converters/overview)
+Once installed you cannot access the original raw value of the property by using `Model.Content.GetPropertyValue("propertyAlias")` however you can access it by using  `Model.Content.GetProperty("propertyAlias").Value.ToString()`
 
-This package currently implements converters for the following built-in Umbraco property editors
+The v2 package for Umbraco v7 currently implements converters for the following built-in Umbraco property editors:
 
-- MNTP - returns `IEnumerable<IPublishedContent>`
-- Ultimate Picker - returns `IEnumerable<IPublishedContent>` if Data Type setting "Type" is set to a multi node selector (e.g. CheckBoxList) or returns `IPublishedContent` if Data Type setting "Type" is set to a single node selector (e.g. DropDownList)
-- XPath CheckBoxList - returns `IEnumerable<IPublishedContent>` (except if member, values setting should be set to "Node Ids"
-- XPath DropDownList - returns `IPublishedContent` (except if member, value setting should be set to "Node Id")
-- Content Picker - returns `IPublishedContent`
-- Media Picker - returns `IPublishedContent`
-- Related Links - returns `RelatedLinksList`
+- [Content Picker](Docs/ContentPicker.md) - returns `IPublishedContent`
+- [Media Picker](Docs/MediaPicker.md) - returns `IPublishedContent`
+- [Multiple Media Picker](Docs/MultipleMediaPicker.md) - returns `IEnumerable<IPublishedContent> or IPublishedContent`
+- [MultiNodeTreePicker](Docs/MultiNodeTreePicker.md) - returns `IEnumerable<IPublishedContent>`
+- [Related Links](Docs/RelatedLinks.md) - returns `RelatedLinks`
 
-## Further property editors to implement ##
-
-- Multiple Textstring
-- Dictionary Picker 
-- Dropdown List Multiple Publish Keys 
-- Dropdown List Multiple
-- Dropdown List Publish
-- Dropdown List 
-- RadioButton List 
-- Tags
-- Checkbox List 
-- Image Cropper 
+[Change Log](Docs/ChangeLog.md)

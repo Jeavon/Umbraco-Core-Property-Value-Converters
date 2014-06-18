@@ -1,6 +1,7 @@
 # Content Picker #
 
 `Alias: Umbraco.ContentPickerAlias`
+
 `Returns: IPublishedContent`
 
 ## Typed Example: ##

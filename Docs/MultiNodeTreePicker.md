@@ -1,6 +1,7 @@
 # MultiNode Tree Picker (MNTP) #
 
 `Alias: Umbraco.MultiNodeTreePicker`
+
 `Returns: IEnumerable<IPublishedContent>`
 
 Works with both Content and Media

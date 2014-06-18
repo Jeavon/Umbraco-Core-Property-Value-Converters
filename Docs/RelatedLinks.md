@@ -1,5 +1,7 @@
 # Related Links #
 
+`Alias: Umbraco.RelatedLinks`
+
 `Returns: RelatedLinks`
 
 ## Typed Example: ##

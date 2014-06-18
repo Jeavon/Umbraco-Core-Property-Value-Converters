@@ -6,7 +6,7 @@
 
 This converter returns a single item if the "Pick multiple items" data type setting is disabled or a collection if it is enabled.
 
-![](images/MultipleMediaPicker.png)
+![](Images/MultipleMediaPicker.png)
 
 ## Typed Example (multiple enabled): ##
 

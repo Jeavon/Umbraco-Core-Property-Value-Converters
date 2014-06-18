@@ -1,5 +1,8 @@
-# Umbraco Core Property Editor Converters v1 #
+# Umbraco Core Property Editor Converters v1 for Umbraco v6.2 #
 
+For Umbraco v7.1+ please go to the [v2 branch](https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters/tree/v2)
+
+![](PropertyValueConverters.png)
 
 This package currently implements converters for the following built-in Umbraco property editors
 

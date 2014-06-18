@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Our.Umbraco.CoreValueConverters</id>
+        <version>0.0.0</version>
+        <title>Umbraco Core Property Value Converters</title>
+        <authors>The Umbraco Community</authors>
+        <owners>The Umbraco Community</owners>
+        <projectUrl>http://our.umbraco.org/projects/developer-tools/umbraco-core-property-editor-converters</projectUrl>
+        <iconUrl>http://www.crumpled-dog.com/images/full-service-creative-agency-london-shoreditch-crumpled-dog.svg</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This package implements property value converters for the Umbraco Core property editors. Visit https://github.com/Jeavon/Umbraco-Core-Property-Editor-Converters-Docs for information.</description>
+        <summary>This package implements property value converters for the Umbraco Core property editors.</summary>
+        <copyright>The Umbraco Community</copyright>
+        <language>en-GB</language>
+        <tags>umbraco</tags>
+        <dependencies>
+            <dependency id="UmbracoCms.Core" version="7.1.0" />
+        </dependencies>
+    </metadata>    
+</package>

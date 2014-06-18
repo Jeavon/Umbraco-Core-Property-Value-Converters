@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Our.Umbraco.CoreValueConverters</id>
+        <version>0.0.0</version>
+        <title>Umbraco Core Property Value Converters</title>
+        <authors>The Umbraco Community</authors>
+        <owners>The Umbraco Community</owners>
+        <projectUrl>https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters32.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multinode Tree Picker (MNTP), Ultimate Picker, XPath CheckBoxList, XPath DropDownList and Related Links property editors.</description>
+        <summary>This package implements property value converters for the Umbraco Core property editors.</summary>
+        <copyright>The Umbraco Community</copyright>
+        <language>en-GB</language>
+        <tags>umbraco</tags>
+        <dependencies>
+            <dependency id="UmbracoCms.Core" version="6.2.0" />
+        </dependencies>
+    </metadata>    
+</package>

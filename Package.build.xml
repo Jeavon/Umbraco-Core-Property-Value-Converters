@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
 
 	<!-- IMPORTS -->
 	<PropertyGroup>
 		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
 		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
+    <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
 	</PropertyGroup>
 
 	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
 	<Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
+  <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
 
 	<!-- PROPERTIES -->
 	<PropertyGroup>
@@ -23,6 +25,7 @@
 		<RootDir>$(MSBuildProjectDirectory)</RootDir>
 		<BuildDir>$(RootDir)\Build</BuildDir>
 		<PackageDir>$(RootDir)\Package</PackageDir>
+    <BuildNuGetDir>$(RootDir)\NugetBuild</BuildNuGetDir>
 		<CoreProjectDir>$(RootDir)\Our.Umbraco.PropertyEditors</CoreProjectDir>
 	</PropertyGroup>
 
@@ -34,6 +37,7 @@
 		<RemoveDir Directories="$(PackageDir)" Condition="Exists('$(PackageDir)')" />
 		<MakeDir Directories="$(BuildDir)" />
 		<MakeDir Directories="$(PackageDir)" />
+    <MakeDir Directories="$(BuildNuGetDir)" />
 	</Target>
 
 	<!-- UPDATE ASSEMBLEY VERSION -->
@@ -59,10 +63,13 @@
 		<ItemGroup>
 			<BinFiles Include="$(CoreProjectDir)\Bin\Debug\Our.Umbraco.PropertyEditorConverters.dll" />
 			<PackageFile Include="$(RootDir)\Package.xml" />
+      <NuSpecFile Include="$(RootDir)\package.nuspec" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
-	</Target>
+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
+    <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+  </Target>
 
 	<!-- MANIFEST -->
 	<Target Name="Manifest" DependsOnTargets="PrepairFiles">
@@ -76,7 +83,21 @@
 			Files="@(ManifestFiles)" />
 	</Target>
 
-	<!-- PACKAGE -->
+  <!-- MANIFEST FOR NUGET PACKAGE -->
+  <Target Name="ManifestNuGet" DependsOnTargets="ManifestUmbraco">
+    <ItemGroup>
+      <ManifestFiles Include="$(BuildNuGetDir)\**\*" Exclude="$(BuildNuGetDir)\package.nuspec" />
+    </ItemGroup>
+    <MSBuild.NuGet.Tasks.ManifestUpdate
+				ManifestFile="$(BuildNuGetDir)\package.nuspec"
+				WorkingDirectory="$(BuildNuGetDir)"
+        Title="$(ProjectName)"
+        Description="@(Readme->'%(Identity)', '%0a%0d')"
+				Version="$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionSuffix)"
+				Files="@(ManifestFiles)" />
+  </Target>
+
+  <!-- PACKAGE -->
 	<Target Name="Package" DependsOnTargets="Manifest">
 		<ItemGroup>
 			<PackageFiles Include="$(BuildDir)\**\*.*" />
@@ -85,7 +106,16 @@
 			WorkingDirectory="$(BuildDir)"
 			OutputDirectory="$(PackageDir)"
 			Files="@(PackageFiles)" />
+
+    <MSBuild.NuGet.Tasks.Pack NuGetExePath="$(MSBuildProjectDirectory)\.nuget\NuGet.exe"
+          ManifestFile="$(BuildNuGetDir)\package.nuspec"
+          BasePath="$(BuildNuGetDir)"
+          Version="$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionSuffix)"
+          OutputDirectory="$(PackageDir)" />    
+    
 		<RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
-	</Target>
+    <RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
+
+  </Target>
 
 </Project>

@@ -64,11 +64,15 @@
 			<BinFiles Include="$(CoreProjectDir)\Bin\Debug\Our.Umbraco.PropertyEditorConverters.dll" />
 			<PackageFile Include="$(RootDir)\Package.xml" />
       <NuSpecFile Include="$(RootDir)\package.nuspec" />
-		</ItemGroup>
+      <ViewsConfigInstallXdt Include ="$(RootDir)\views.web.config.install.xdt"/>
+      <ViewsConfigUninstallXdt Include ="$(RootDir)\views.web.config.uninstall.xdt"/>
+    </ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
     <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+    <Copy SourceFiles="@(ViewsConfigInstallXdt)" DestinationFiles="$(BuildNuGetDir)\Content\Views\web.config.install.xdt" />
+    <Copy SourceFiles="@(ViewsConfigUninstallXdt)" DestinationFiles="$(BuildNuGetDir)\Content\Views\web.config.uninstall.xdt" />
   </Target>
 
 	<!-- MANIFEST -->

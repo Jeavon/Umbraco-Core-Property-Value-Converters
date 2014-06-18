@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Pack
 		Package.build.xml = Package.build.xml
 		package.nuspec = package.nuspec
 		Package.xml = Package.xml
+		views.web.config.install.xdt = views.web.config.install.xdt
+		views.web.config.uninstall.xdt = views.web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSite", "TestSite\TestSite.csproj", "{B49ECE19-FBB7-4D1B-8973-FD7CE43DC0E0}"

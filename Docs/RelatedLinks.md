@@ -7,7 +7,6 @@
 ## Typed Example: ##
 
 ```c#
-    @using Our.Umbraco.PropertyConverters.Models
     @{
         var typedRelatedLinksConverted = Model.Content.GetPropertyValue<RelatedLinks>("relatedLinks");
 
@@ -27,7 +26,6 @@
 ## Dynamic Example: ##
 
 ```c#
-    @using Our.Umbraco.PropertyConverters.Models
     @{
         var dynamicRelatedLinks = CurrentPage.relatedLinks;
 

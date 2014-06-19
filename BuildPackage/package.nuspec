@@ -7,7 +7,7 @@
         <authors>The Umbraco Community</authors>
         <owners>The Umbraco Community</owners>
         <projectUrl>https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters</projectUrl>
-        <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters32.png</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multiple Media Picker, Multinode Tree Picker and Related Links property editors.</description>
         <summary>This package implements property value converters for the Umbraco Core property editors.</summary>

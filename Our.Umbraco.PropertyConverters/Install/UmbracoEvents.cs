@@ -16,9 +16,9 @@
             UmbracoApplicationBase umbracoApplication,
             ApplicationContext applicationContext)
         {
-            if (!Install.NameSpace.Check(File, XPath, NameSpace))
+            if (!ConfigNameSpaceModifier.Check(File, XPath, NameSpace))
             {
-                Install.NameSpace.Add(File, XPath, NameSpace);
+                ConfigNameSpaceModifier.Add(File, XPath, NameSpace);
             }
             InstalledPackage.BeforeDelete += InstalledPackage_BeforeDelete;
         }
@@ -27,7 +27,7 @@
         {
             if (sender.Data.Name == "Umbraco Core Property Value Converters")
             {
-                Install.NameSpace.Remove(File, XPath, NameSpace);
+                ConfigNameSpaceModifier.Remove(File, XPath + "/namespaces", NameSpace);
             }
         }
     }

@@ -7,7 +7,7 @@
     using global::Umbraco.Core;
     using global::Umbraco.Core.Logging;
 
-    public static class NameSpace
+    public static class ConfigNameSpaceModifier
     {
         public static bool Add(string file, string xPath, string nameSpace)
         {
@@ -108,7 +108,7 @@
                 {
                     // Log error message
                     var message = "Error while adding namespace: " + e.Message;
-                    LogHelper.Error(typeof(NameSpace), message, e);
+                    LogHelper.Error(typeof(ConfigNameSpaceModifier), message, e);
                 }
             }
 
@@ -173,7 +173,7 @@
                 {
                     // Log error message
                     var message = "Error while removing namespace: " + e.Message;
-                    LogHelper.Error(typeof(NameSpace), message, e);
+                    LogHelper.Error(typeof(ConfigNameSpaceModifier), message, e);
                 }
             }
 
@@ -204,7 +204,7 @@
                 // Look for existing add nodes with attribute path
                 var xmlNodeList = rootNode.SelectNodes(
                     string.Format("//add[@namespace = '{0}']", nameSpace));
-                if (xmlNodeList != null)
+                if (xmlNodeList != null && xmlNodeList.Count > 0)
                 {
                     return true;
                 }

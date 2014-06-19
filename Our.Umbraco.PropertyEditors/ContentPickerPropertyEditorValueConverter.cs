@@ -12,6 +12,8 @@ using umbraco;
 
 namespace Our.Umbraco.PropertyEditorConverters
 {
+    using System.Globalization;
+
     public class ContentPickerPropertyEditorValueConverter : IPropertyEditorValueConverter
     {
         string _propertyTypeAlias = string.Empty;
@@ -21,7 +23,14 @@ namespace Our.Umbraco.PropertyEditorConverters
         {
             _propertyTypeAlias = propertyTypeAlias;
             _docTypeAlias = docTypeAlias;
-            return Guid.Parse("158aa029-24ed-4948-939e-c3da209e5fba").Equals(propertyEditorId);
+
+            var propertiesToExclude = new List<string>()
+                                          {
+                                              Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.CurrentCulture),
+                                              Constants.Conventions.Content.Redirect.ToLower(CultureInfo.CurrentCulture)
+                                          };
+            return Guid.Parse("158aa029-24ed-4948-939e-c3da209e5fba").Equals(propertyEditorId)
+                   && !propertiesToExclude.Contains(propertyTypeAlias.ToLower(CultureInfo.CurrentCulture));
         }
         public Attempt<object> ConvertPropertyValue(object value)
         {

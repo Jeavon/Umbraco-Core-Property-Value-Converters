@@ -26,11 +26,11 @@ namespace Our.Umbraco.PropertyEditorConverters
 
             var propertiesToExclude = new List<string>()
                                           {
-                                              Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.CurrentCulture),
-                                              Constants.Conventions.Content.Redirect.ToLower(CultureInfo.CurrentCulture)
+                                              Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.InvariantCulture),
+                                              Constants.Conventions.Content.Redirect.ToLower(CultureInfo.InvariantCulture)
                                           };
             return Guid.Parse("158aa029-24ed-4948-939e-c3da209e5fba").Equals(propertyEditorId)
-                   && !propertiesToExclude.Contains(propertyTypeAlias.ToLower(CultureInfo.CurrentCulture));
+                   && !propertiesToExclude.Contains(propertyTypeAlias.ToLower(CultureInfo.InvariantCulture));
         }
         public Attempt<object> ConvertPropertyValue(object value)
         {

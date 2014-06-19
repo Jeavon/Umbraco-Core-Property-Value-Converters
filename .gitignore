@@ -163,7 +163,7 @@ TestSite/[Bb]in/*
 # Value Converters
 # =========================
 Our.Umbraco.PropertyEditors/bin/*
-/Package/*
+BuildPackage/Package/*
 # =========================
 # Umbraco
 # =========================

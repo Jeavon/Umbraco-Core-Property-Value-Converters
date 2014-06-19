@@ -10,12 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Package", "{2DF942A9-A7E7-4769-87EF-0958A4206D28}"
 	ProjectSection(SolutionItems) = preProject
-		Package.build.cmd = Package.build.cmd
-		Package.build.xml = Package.build.xml
-		package.nuspec = package.nuspec
-		Package.xml = Package.xml
-		views.web.config.install.xdt = views.web.config.install.xdt
-		views.web.config.uninstall.xdt = views.web.config.uninstall.xdt
+		BuildPackage\Package.build.cmd = BuildPackage\Package.build.cmd
+		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
+		BuildPackage\package.nuspec = BuildPackage\package.nuspec
+		BuildPackage\Package.xml = BuildPackage\Package.xml
+		BuildPackage\views.web.config.install.xdt = BuildPackage\views.web.config.install.xdt
+		BuildPackage\views.web.config.uninstall.xdt = BuildPackage\views.web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSite", "TestSite\TestSite.csproj", "{B49ECE19-FBB7-4D1B-8973-FD7CE43DC0E0}"
@@ -27,6 +27,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{693E8F
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{859D7DB9-182A-4544-B76D-3DFF24B53FBF}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\ChangeLog.md = Docs\ChangeLog.md
+		Docs\ContentPicker.md = Docs\ContentPicker.md
+		Docs\MediaPicker.md = Docs\MediaPicker.md
+		Docs\MultiNodeTreePicker.md = Docs\MultiNodeTreePicker.md
+		Docs\MultipleMediaPicker.md = Docs\MultipleMediaPicker.md
+		Docs\RelatedLinks.md = Docs\RelatedLinks.md
 	EndProjectSection
 EndProject
 Global
@@ -49,5 +59,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2DF942A9-A7E7-4769-87EF-0958A4206D28} = {167DF588-4912-492B-9DE2-83B1BD8438A7}
+		{859D7DB9-182A-4544-B76D-3DFF24B53FBF} = {167DF588-4912-492B-9DE2-83B1BD8438A7}
 	EndGlobalSection
 EndGlobal

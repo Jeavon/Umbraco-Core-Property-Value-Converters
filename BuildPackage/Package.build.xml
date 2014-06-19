@@ -3,9 +3,9 @@
 
 	<!-- IMPORTS -->
 	<PropertyGroup>
-		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
-		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
-    <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
+		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\..\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\..\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
+    <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\..\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
 	</PropertyGroup>
 
 	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
@@ -22,10 +22,10 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<RootDir>$(MSBuildProjectDirectory)</RootDir>
-		<BuildDir>$(RootDir)\Build</BuildDir>
-		<PackageDir>$(RootDir)\Package</PackageDir>
-    <BuildNuGetDir>$(RootDir)\NugetBuild</BuildNuGetDir>
+		<RootDir>$(MSBuildProjectDirectory)\..</RootDir>
+		<BuildDir>$(MSBuildProjectDirectory)\Build</BuildDir>
+		<PackageDir>$(MSBuildProjectDirectory)\Package</PackageDir>
+    <BuildNuGetDir>$(MSBuildProjectDirectory)\NugetBuild</BuildNuGetDir>
 		<CoreProjectDir>$(RootDir)\Our.Umbraco.PropertyConverters</CoreProjectDir>
 	</PropertyGroup>
 
@@ -62,10 +62,10 @@
 	<Target Name="PrepairFiles" DependsOnTargets="Compile">
 		<ItemGroup>
 			<BinFiles Include="$(CoreProjectDir)\Bin\Debug\Our.Umbraco.PropertyEditorConverters.dll" />
-			<PackageFile Include="$(RootDir)\Package.xml" />
-      <NuSpecFile Include="$(RootDir)\package.nuspec" />
-      <ViewsConfigInstallXdt Include ="$(RootDir)\views.web.config.install.xdt"/>
-      <ViewsConfigUninstallXdt Include ="$(RootDir)\views.web.config.uninstall.xdt"/>
+			<PackageFile Include="$(MSBuildProjectDirectory)\Package.xml" />
+      <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+      <ViewsConfigInstallXdt Include ="$(MSBuildProjectDirectory)\views.web.config.install.xdt"/>
+      <ViewsConfigUninstallXdt Include ="$(MSBuildProjectDirectory)\views.web.config.uninstall.xdt"/>
     </ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
@@ -111,7 +111,7 @@
 			OutputDirectory="$(PackageDir)"
 			Files="@(PackageFiles)" />
 
-    <MSBuild.NuGet.Tasks.Pack NuGetExePath="$(MSBuildProjectDirectory)\.nuget\NuGet.exe"
+    <MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\.nuget\NuGet.exe"
           ManifestFile="$(BuildNuGetDir)\package.nuspec"
           BasePath="$(BuildNuGetDir)"
           Version="$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionSuffix)"

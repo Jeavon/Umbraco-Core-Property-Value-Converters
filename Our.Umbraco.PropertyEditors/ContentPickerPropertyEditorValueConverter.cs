@@ -27,19 +27,7 @@ namespace Our.Umbraco.PropertyEditorConverters
         {
             int nodeId; //check value is node id
 
-            var propertiesToExclude = new List<string>()
-                                          {
-                                              Constants.Conventions.Content.InternalRedirectId.ToLowerInvariant(),
-                                              Constants.Conventions.Content.Redirect.ToLowerInvariant()
-                                          };
-
-            if (propertiesToExclude.Contains(_propertyTypeAlias))
-            {
-                return Attempt<object>.Succeed(value.ToString());
-
-            }
-
-            if (UmbracoContext.Current != null && int.TryParse(value.ToString(), out nodeId) && !propertiesToExclude.Contains(_propertyTypeAlias))
+            if (UmbracoContext.Current != null && int.TryParse(value.ToString(), out nodeId))
             {                
                 var umbHelper = new UmbracoHelper(UmbracoContext.Current);
                 IPublishedContent contentPickerContent = null;

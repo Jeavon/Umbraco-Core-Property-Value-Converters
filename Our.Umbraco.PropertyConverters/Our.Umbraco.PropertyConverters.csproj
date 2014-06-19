@@ -217,6 +217,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Install\NameSpace.cs" />
+    <Compile Include="Install\UmbracoEvents.cs" />
     <Compile Include="Models\RelatedLinks.cs" />
     <Compile Include="Models\RelatedLinkType.cs" />
     <Compile Include="Properties\VersionInfo.cs" />

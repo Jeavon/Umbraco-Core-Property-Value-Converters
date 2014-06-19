@@ -24,8 +24,8 @@
 
             var propertiesToExclude = new List<string>()
                                           {
-                                              Constants.Conventions.Content.InternalRedirectId.ToLowerInvariant(),
-                                              Constants.Conventions.Content.Redirect.ToLowerInvariant()
+                                              Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.InvariantCulture),
+                                              Constants.Conventions.Content.Redirect.ToLower(CultureInfo.InvariantCulture)
                                           };
 
             int nodeId; 

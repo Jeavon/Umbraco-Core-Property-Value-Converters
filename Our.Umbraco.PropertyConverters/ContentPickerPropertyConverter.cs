@@ -1,5 +1,6 @@
 ﻿namespace Our.Umbraco.PropertyConverters
 {
+    using System.Collections.Generic;
     using System.Globalization;
 
     using global::Umbraco.Core;
@@ -21,15 +22,19 @@
             if (source == null) return null;
             var sourceString = source.ToString();
 
-            int nodeId; //check value is node id
+            var propertiesToExclude = new List<string>()
+                                          {
+                                              Constants.Conventions.Content.InternalRedirectId.ToLowerInvariant(),
+                                              Constants.Conventions.Content.Redirect.ToLowerInvariant()
+                                          };
+
+            int nodeId; 
+
+            // check value is node id
             if (UmbracoContext.Current != null && int.TryParse(sourceString, out nodeId))
             {
-                if (
-                    !(propertyType.PropertyTypeAlias != null
-                      && propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture)
-                      == "umbracoInternalRedirectId".ToLower(CultureInfo.InvariantCulture)))
-                {
-                    
+                if (!(propertyType.PropertyTypeAlias != null && propertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
+                {                    
                     var umbHelper = new UmbracoHelper(UmbracoContext.Current);
                     var contentPickerContent = umbHelper.TypedContent(nodeId);
                     return contentPickerContent;

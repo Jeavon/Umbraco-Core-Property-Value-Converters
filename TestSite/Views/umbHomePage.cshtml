@@ -8,6 +8,7 @@
     <div id="main" class="container">
         <div class="row">
             <div class="12u">
+                <h2>Content picker</h2>
                 @{
                     var typedContentPicker = Model.Content.GetPropertyValue<IPublishedContent>("contentPicker");
                     if (typedContentPicker != null)
@@ -15,6 +16,7 @@
                         <p>@typedContentPicker.Name</p>
                     }
                 }
+                <h2>Media picker</h2>
                 @{
                     var typedMediaPicker = Model.Content.GetPropertyValue<IPublishedContent>("mainImage");
                     if (typedMediaPicker != null)
@@ -23,7 +25,7 @@
                     }
                 }
                 
-                <h2>Multi ndoe tree picker</h2>
+                <h2>Multi node tree picker</h2>
                 @{
                     var typedMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredNews");
                     foreach (var item in typedMultiNodeTreePicker)

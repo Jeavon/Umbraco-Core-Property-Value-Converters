@@ -9,8 +9,8 @@
         <projectUrl>https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multiple Media Picker, Multinode Tree Picker and Related Links property editors.</description>
-        <summary>This package implements property value converters for the Umbraco Core property editors.</summary>
+        <description>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multiple Media Picker, Multinode Tree Picker and Related Links property editors from strings to objects.</description>
+        <summary>This package implements property value converters for the Umbraco Core property editors so that they return objects instead of strings.</summary>
         <copyright>The Umbraco Community</copyright>
         <language>en-GB</language>
         <tags>umbraco</tags>

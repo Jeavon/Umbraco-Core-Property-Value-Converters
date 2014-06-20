@@ -16,3 +16,5 @@ The v2 package for Umbraco v7 currently implements converters for the following 
 - [Related Links](Docs/RelatedLinks.md) - returns `RelatedLinks`
 
 [Change Log](Docs/ChangeLog.md)
+
+This project is [MIT](http://opensource.org/licenses/mit-license.php) licensed

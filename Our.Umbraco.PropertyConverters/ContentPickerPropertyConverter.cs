@@ -9,8 +9,11 @@
 
 namespace Our.Umbraco.PropertyConverters
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
+    using System.Linq;
 
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
@@ -75,10 +78,25 @@ namespace Our.Umbraco.PropertyConverters
             if (UmbracoContext.Current != null && int.TryParse(sourceString, out nodeId))
             {
                 if (!(propertyType.PropertyTypeAlias != null && propertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
-                {                    
+                {
+
+                    var st = new StackTrace();
+
+                    var invokedTypes = st.GetFrames().Select(x =>
+                            {
+                                var declaringType = x.GetMethod().DeclaringType;
+                                return declaringType != null ? declaringType.Name : null;
+                            }).ToList();
+
+
                     var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-                    var contentPickerContent = umbHelper.TypedContent(nodeId);
-                    return contentPickerContent;
+
+                    if (invokedTypes.Contains("DynamicPublishedContent"))
+                    {
+                        return umbHelper.Content(nodeId);
+                    }
+
+                    return umbHelper.TypedContent(nodeId);
                 }
             }
 

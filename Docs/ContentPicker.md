@@ -20,10 +20,12 @@
 
 ```c#
     @{
-        var dynamicContentPicker = CurrentPage.contentPicker;
-        if (dynamicContentPicker != null)
+        if (CurrentPage.HasValue("contentPicker"))
         {
-            <p>@dynamicContentPicker.Name</p>                                                
-        } 
+            var dynamicContentPicker = CurrentPage.contentPicker;
+            <p>Name: @dynamicContentPicker.Name</p>
+            <p>Title: @dynamicContentPicker.title</p>
+        }                    
     }
+
 ```

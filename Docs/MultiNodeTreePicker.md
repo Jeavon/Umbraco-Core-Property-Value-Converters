@@ -25,7 +25,12 @@ Works with both Content and Media
         var dynamicMultiNodeTreePicker = CurrentPage.featuredNews;
         foreach (var item in dynamicMultiNodeTreePicker)
         {
-            <p>@item.Name</p>
+            <p>Name: @item.Name</p>
+            if (item.HasValue("title"))
+            {
+                <p>Title: @item.title</p>
+            }
         }
-    }
+    }     
+                
 ```

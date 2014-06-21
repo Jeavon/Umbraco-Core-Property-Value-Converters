@@ -20,10 +20,11 @@
 
 ```c#
     @{
-        var dynamicMediaPickerSingle = CurrentPage.multiMediaSingle;
-        if (dynamicMediaPickerSingle != null)
+        if (CurrentPage.HasValue("mainImage"))
         {
-            <img src="@dynamicMediaPickerSingle.Url" style="width:200px" />
+            var dynamicMediaPicker = CurrentPage.mainImage;
+            <p>Url: @dynamicMediaPicker.Url</p>
+            <p>UmbracoFile: @dynamicMediaPicker.umbracoFile</p>
         }
-    }     
+    }       
 ```

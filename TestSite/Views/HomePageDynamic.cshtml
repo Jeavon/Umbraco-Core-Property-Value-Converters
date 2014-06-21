@@ -10,9 +10,9 @@
             <div class="12u">
                 <h2>Content picker</h2>
                 @{
-                    var dynamicContentPicker = CurrentPage.contentPicker;
                     if (CurrentPage.HasValue("contentPicker"))
                     {
+                        var dynamicContentPicker = CurrentPage.contentPicker;
                         <p>@dynamicContentPicker.GetType()</p>
                         <p>Name: @dynamicContentPicker.Name</p>
                         <p>Title (dyn): @dynamicContentPicker.title</p>

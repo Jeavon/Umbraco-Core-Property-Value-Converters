@@ -16,7 +16,6 @@ This converter returns a single item if the "Pick multiple items" data type sett
         foreach (var item in typedMultiMediaPicker)
         {
             <img src="@item.Url" style="width:200px"/>
-            @item.Name
         }
     }
 ```
@@ -29,6 +28,7 @@ This converter returns a single item if the "Pick multiple items" data type sett
         if (typedMediaPickerSingle != null)
         {
             <p>@typedMediaPickerSingle.Url</p>
+            <img src="@typedMediaPickerSingle.Url" style="width:200px" alt="@typedMediaPickerSingle.GetPropertyValue("alt")" />
         }
     }      
 ```
@@ -40,10 +40,9 @@ This converter returns a single item if the "Pick multiple items" data type sett
         var dynamicMultiMediaPicker = CurrentPage.multiMedia;
         foreach (var item in dynamicMultiMediaPicker)
         {
-            <img src="@item.Url" style="width:200px"/>
-            @item.Name
+            <img src="@item.Url" style="width:200px" alt="@item.alt" />
         }
-    }         
+    }       
 ```
 
 
@@ -51,10 +50,10 @@ This converter returns a single item if the "Pick multiple items" data type sett
 
 ```c#
     @{
-        var dynamicMediaPickerSingle = CurrentPage.multiMediaSingle;
-        if (dynamicMediaPickerSingle != null)
+        if (CurrentPage.HasValue("multiMediaSingle"))
         {
-            <img src="@dynamicMediaPickerSingle.Url" style="width:200px" />
+            var dynamicMediaPickerSingle = CurrentPage.multiMediaSingle;
+            <img src="@dynamicMediaPickerSingle.Url" style="width:200px" alt="@dynamicMediaPickerSingle.alt" />
         }
-    }          
+    }    
 ```

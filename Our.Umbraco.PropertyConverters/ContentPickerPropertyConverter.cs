@@ -21,6 +21,8 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
 
+    using Our.Umbraco.PropertyConverters.Utilities;
+
     /// <summary>
     /// The content picker property editor converter.
     /// </summary>
@@ -79,24 +81,9 @@ namespace Our.Umbraco.PropertyConverters
             {
                 if (!(propertyType.PropertyTypeAlias != null && propertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
                 {
-
-                    var st = new StackTrace();
-
-                    var invokedTypes = st.GetFrames().Select(x =>
-                            {
-                                var declaringType = x.GetMethod().DeclaringType;
-                                return declaringType != null ? declaringType.Name : null;
-                            }).ToList();
-
-
                     var umbHelper = new UmbracoHelper(UmbracoContext.Current);
 
-                    if (invokedTypes.Contains("DynamicPublishedContent"))
-                    {
-                        return umbHelper.Content(nodeId);
-                    }
-
-                    return umbHelper.TypedContent(nodeId);
+                    return ConverterHelper.DynamicInvocation() ? umbHelper.Content(nodeId) : umbHelper.TypedContent(nodeId);
                 }
             }
 

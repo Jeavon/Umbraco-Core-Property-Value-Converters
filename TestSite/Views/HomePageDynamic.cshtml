@@ -1,0 +1,33 @@
+﻿@inherits UmbracoTemplatePage
+@{
+    Layout = "umbLayout.cshtml";
+}
+@{ Html.RenderPartial("umbHomepageBanner"); }
+<!-- Main -->
+<div id="main-wrapper">
+    <div id="main" class="container">
+        <div class="row">
+            <div class="12u">
+                <h2>Content picker</h2>
+                @{
+                    var dynamicContentPicker = CurrentPage.contentPicker;
+                    if (dynamicContentPicker != null)
+                    {
+                        <p>@dynamicContentPicker.GetType()</p>
+                        <p>Name: @dynamicContentPicker.Name</p>
+                        <p>Title: @dynamicContentPicker.title</p>
+                    }
+}
+                                
+
+                @{ Html.RenderPartial("umbFeatures"); }
+            </div>
+        </div>
+        <div class="row">
+            <div class="12u">
+                @{   Html.RenderPartial("umbNewsOverviewWidget"); }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Main -->

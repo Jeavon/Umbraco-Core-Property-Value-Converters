@@ -13,6 +13,7 @@
                     var typedContentPicker = Model.Content.GetPropertyValue<IPublishedContent>("contentPicker");
                     if (typedContentPicker != null)
                     {
+                        <p>@typedContentPicker.GetType()</p>
                         <p>@typedContentPicker.Name</p>
                     }
                 }

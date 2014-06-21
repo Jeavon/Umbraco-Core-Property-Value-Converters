@@ -6,6 +6,8 @@
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
 
+    using Our.Umbraco.PropertyConverters.Utilities;
+
     [PropertyValueType(typeof(IPublishedContent))]
     [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.Content)]
     public class MediaPickerPropertyConverter : PropertyValueConverterBase
@@ -23,8 +25,7 @@
             if (UmbracoContext.Current != null && int.TryParse(sourceString, out nodeId))
             {
                 var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-                var mediaPickerContent = umbHelper.TypedMedia(nodeId);
-                return mediaPickerContent;
+                return ConverterHelper.DynamicInvocation() ? umbHelper.Media(nodeId) : umbHelper.TypedMedia(nodeId);
             }
             return null;
         }

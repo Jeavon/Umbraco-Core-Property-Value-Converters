@@ -11,14 +11,75 @@
                 <h2>Content picker</h2>
                 @{
                     var dynamicContentPicker = CurrentPage.contentPicker;
-                    if (dynamicContentPicker != null)
+                    if (CurrentPage.HasValue("contentPicker"))
                     {
                         <p>@dynamicContentPicker.GetType()</p>
                         <p>Name: @dynamicContentPicker.Name</p>
-                        <p>Title: @dynamicContentPicker.title</p>
+                        <p>Title (dyn): @dynamicContentPicker.title</p>
+                    }                    
+                }
+
+                <h2>Media picker</h2>
+                @{
+                    if (CurrentPage.HasValue("mainImage"))
+                    {
+                        var dynamicMediaPicker = CurrentPage.mainImage;
+                        <p>@dynamicMediaPicker.GetType()</p>
+                        <p>Url: @dynamicMediaPicker.Url</p>
+                        <p>UmbracoFile (dyn): @dynamicMediaPicker.umbracoFile</p>
                     }
-}
-                                
+                }                                   
+                
+                <h2>Dynamic Multi node tree picker</h2>
+                @{
+                    var dynamicMultiNodeTreePicker = CurrentPage.featuredNews;
+                    foreach (var item in dynamicMultiNodeTreePicker)
+                    {
+                        <p>Name: @item.Name</p>
+                        if (item.HasValue("title"))
+                        {
+                            <p>Title(dyn): @item.title</p>
+                        }
+                    }
+                }     
+                
+                <h2>Dynamic Multiple Media Picker set to multiple</h2>
+                @{
+                    var dynamicMultiMediaPicker = CurrentPage.multiMedia;
+                    foreach (var item in dynamicMultiMediaPicker)
+                    {
+                        <img src="@item.Url" style="width:200px" />
+                        <p>Name:@item.Name @item.GetType()</p>
+                        <p>UmbracoFile:@item.umbracoFile</p>
+                    }
+                }
+                
+                <h2>Dynamic Multiple Media Picker set to single</h2>
+                @{
+                    if (CurrentPage.HasValue("multiMediaSingle"))
+                    {
+                        var dynamicMediaPickerSingle = CurrentPage.multiMediaSingle;
+                        <img src="@dynamicMediaPickerSingle.Url" style="width:200px" />
+                        <p>Name:@dynamicMediaPickerSingle.Name @dynamicMediaPickerSingle.GetType()</p>
+                        <p>UmbracoFile:@dynamicMediaPickerSingle.umbracoFile</p>
+                    }
+                } 
+                
+                <h2>Dynamic Related Links</h2>
+                @{
+                    var dynamicRelatedLinks = CurrentPage.relatedLinks;
+
+                    if (dynamicRelatedLinks.Any())
+                    {
+                        <ul>
+                            @foreach (var item in dynamicRelatedLinks)
+                            {
+                                var linkTarget = (item.NewWindow) ? "_blank" : null;
+                                <li><a href="@item.Link" target="@linkTarget">@item.Caption</a></li>
+                            }
+                        </ul>
+                    }
+                }                                                       
 
                 @{ Html.RenderPartial("umbFeatures"); }
             </div>

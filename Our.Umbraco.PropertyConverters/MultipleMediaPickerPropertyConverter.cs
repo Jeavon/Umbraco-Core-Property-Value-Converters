@@ -19,6 +19,8 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
 
+    using Our.Umbraco.PropertyConverters.Utilities;
+
     /// <summary>
     /// The multiple media picker property editor converter.
     /// </summary>
@@ -77,6 +79,8 @@ namespace Our.Umbraco.PropertyConverters
                 return null;
             }
 
+            var dynamicInvocation = ConverterHelper.DynamicInvocation();
+
             var umbHelper = new UmbracoHelper(UmbracoContext.Current);
             if (multiPicker)
             {
@@ -88,7 +92,7 @@ namespace Our.Umbraco.PropertyConverters
                         .ToArray();
                 if (nodeIds.Length > 0)
                 {
-                    multiMediaPicker = umbHelper.TypedMedia(nodeIds).Where(x => x != null);
+                    multiMediaPicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
                 }
 
                 return multiMediaPicker;
@@ -97,7 +101,7 @@ namespace Our.Umbraco.PropertyConverters
             int nodeId; // check value is node id
             if (int.TryParse(sourceString, out nodeId))
             {
-                return umbHelper.TypedMedia(nodeId);
+                return dynamicInvocation ? umbHelper.Media(nodeId) : umbHelper.TypedMedia(nodeId);
             }
             else
             {

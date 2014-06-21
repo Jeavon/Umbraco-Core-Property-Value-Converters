@@ -12,6 +12,8 @@ namespace Our.Umbraco.PropertyConverters
     using System;
     using System.Linq;
 
+    using Our.Umbraco.PropertyConverters.Utilities;
+
     using umbraco;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
@@ -97,13 +99,16 @@ namespace Our.Umbraco.PropertyConverters
                         multiNodeTreePicker = umbHelper.TypedMedia(nodeIds).Where(x => x != null);
                     } 
                     */
+
+                    var dynamicInvocation = ConverterHelper.DynamicInvocation();
+
                     if (uQuery.GetUmbracoObjectType(nodeIds[0]) == uQuery.UmbracoObjectType.Document)
                     {
-                        multiNodeTreePicker = umbHelper.TypedContent(nodeIds).Where(x => x != null);
+                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null);
                     }
                     else if (uQuery.GetUmbracoObjectType(nodeIds[0]) == uQuery.UmbracoObjectType.Media)
                     {
-                        multiNodeTreePicker = umbHelper.TypedMedia(nodeIds).Where(x => x != null);
+                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
                     }
                     else
                     {

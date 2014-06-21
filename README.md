@@ -15,6 +15,11 @@ The v2 package for Umbraco v7 currently implements converters for the following 
 - [MultiNodeTreePicker](Docs/MultiNodeTreePicker.md) - returns `IEnumerable<IPublishedContent>`
 - [Related Links](Docs/RelatedLinks.md) - returns `RelatedLinks`
 
+These converters work with both the typed IPublishedContent (Model.Content) and also the dynamic DynamicPublishedContent (CurrentPage). We use some dark magic (StackTrace) to make sure we return the correct model. However if you only use one model you can specify this by adding a optional key to app settings of your web.config, this will avoid the dark magic and therefore improve performance. The optional setting is as follows:
+
+    <add key="Our.Umbraco.CoreValueConverters:Mode" value="typed" />
+    <add key="Our.Umbraco.CoreValueConverters:Mode" value="dynamic" />
+
 [Change Log](Docs/ChangeLog.md)
 
 This project is [MIT](http://opensource.org/licenses/mit-license.php) licensed

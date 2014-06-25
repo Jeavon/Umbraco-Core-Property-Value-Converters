@@ -43,6 +43,17 @@
                     }
                 }     
                 
+                <h2>Dynamic Multi node tree picker members</h2>
+                @{
+                    var dynamicMultiNodeTreePickerMembers = CurrentPage.featuredMember;
+                    foreach (var item in dynamicMultiNodeTreePickerMembers)
+                    {
+                        <p>@item.GetType()</p>
+                        <p>@item.Name</p>
+                        <p>@item.myProperty</p>
+                    }
+                }     
+                
                 <h2>Dynamic Multiple Media Picker set to multiple</h2>
                 @{
                     var dynamicMultiMediaPicker = CurrentPage.multiMedia;

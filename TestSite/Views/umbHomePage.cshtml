@@ -26,8 +26,8 @@
                         <p>@typedMediaPicker.Url</p>
                     }
                 }
-                
-                <h2>Multi node tree picker</h2>
+
+                <h2>Multi node tree picker content</h2>
                 @{
                     var typedMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredNews");
                     foreach (var item in typedMultiNodeTreePicker)
@@ -35,27 +35,47 @@
                         <p>@item.Name</p>
                     }
                 }
-                
+
+                <h2>Multi node tree picker media</h2>
+                @{
+                    var typedMultiNodeTreePickerMedia = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMedia");
+                    foreach (var item in typedMultiNodeTreePickerMedia)
+                    {
+                        <p>@item.Name</p>
+                    }
+                }
+
+                <h2>Multi node tree picker members</h2>
+                @{
+                    var typedMultiNodeTreePickerMembers = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMember");
+                    foreach (var item in typedMultiNodeTreePickerMembers)
+                    {
+                        <p>@item.GetType()</p>
+                        <p>@item.Name</p>
+                        <p>@(item.GetPropertyValue<string>("myProperty"))</p>
+                    }
+                }
+
                 <h2>Multiple Media Picker set to multiple</h2>
                 @{
                     var typedMultiMediaPicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("multiMedia");
                     foreach (var item in typedMultiMediaPicker)
                     {
-                        <img src="@item.Url" style="width:200px"/>
+                        <img src="@item.Url" style="width:200px" />
                         @item.Name @item.GetType()
                     }
-                }                    
+                }
 
                 <h2>Multiple Media Picker set to single</h2>
                 @{
                     var typedMediaPickerSingle = Model.Content.GetPropertyValue<IPublishedContent>("multiMediaSingle");
                     if (typedMediaPickerSingle != null)
                     {
-                        <img src="@typedMediaPickerSingle.Url" style="width:200px"/>
+                        <img src="@typedMediaPickerSingle.Url" style="width:200px" />
                         @typedMediaPickerSingle.GetType()
                     }
-                }               
-               
+                }
+
                 <h2>Related Links</h2>
                 @{
                     var typedRelatedLinksConverted = Model.Content.GetPropertyValue<RelatedLinks>("relatedLinks");
@@ -70,7 +90,7 @@
                             }
                         </ul>
                     }
-                }                                      
+                }
 
                 @{ Html.RenderPartial("umbFeatures"); }
             </div>

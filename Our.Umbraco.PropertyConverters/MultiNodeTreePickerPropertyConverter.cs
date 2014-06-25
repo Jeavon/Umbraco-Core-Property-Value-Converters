@@ -10,11 +10,11 @@
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Our.Umbraco.PropertyConverters.Utilities;
 
-    using umbraco;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
@@ -87,28 +87,32 @@ namespace Our.Umbraco.PropertyConverters
 
                 if (nodeIds.Length > 0)
                 {
-                    /*
+                    var dynamicInvocation = ConverterHelper.DynamicInvocation();   
+                 
                     var objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeIds[0]);
 
-                    if (objectType == UmbracoObjectTypes.ContentItem)
-                    {
-                        multiNodeTreePicker = umbHelper.TypedContent(nodeIds).Where(x => x != null);
-                    }
-                    else if (objectType == UmbracoObjectTypes.Media)
-                    {
-                        multiNodeTreePicker = umbHelper.TypedMedia(nodeIds).Where(x => x != null);
-                    } 
-                    */
-
-                    var dynamicInvocation = ConverterHelper.DynamicInvocation();
-
-                    if (uQuery.GetUmbracoObjectType(nodeIds[0]) == uQuery.UmbracoObjectType.Document)
+                    if (objectType == UmbracoObjectTypes.Document)
                     {
                         multiNodeTreePicker = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null);
                     }
-                    else if (uQuery.GetUmbracoObjectType(nodeIds[0]) == uQuery.UmbracoObjectType.Media)
+                    else if (objectType == UmbracoObjectTypes.Media)
                     {
                         multiNodeTreePicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
+                    }
+                    else if (objectType == UmbracoObjectTypes.Member)
+                    {
+                        var members = new List<IPublishedContent>();
+
+                        foreach (var nodeId in nodeIds)
+                        {
+                            var member = umbHelper.TypedMember(nodeId);
+                            if (member != null)
+                            {
+                                members.Add(dynamicInvocation ? member.AsDynamic() : member);
+                            }
+                        }
+
+                        multiNodeTreePicker = members;
                     }
                     else
                     {

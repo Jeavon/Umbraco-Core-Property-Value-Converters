@@ -1,4 +1,4 @@
-/*! umbraco - v7.1.4 - 2014-05-28
+/*! umbraco - v7.1.5 - 2014-06-21
  * https://github.com/umbraco/umbraco-cms/
  * Copyright (c) 2014 Umbraco HQ;
  * Licensed MIT
@@ -87,6 +87,41 @@ angular.module("umbraco.directives")
 							scope.placeholder = value;	
 						});
 				}
+			    
+				(function () {
+
+				    var mX, mY, distance;
+
+				    function calculateDistance(elem, mouseX, mouseY) {
+
+				        var cx = Math.max(Math.min(mouseX, elem.offset().left + elem.width()), elem.offset().left);
+				        var cy = Math.max(Math.min(mouseY, elem.offset().top + elem.height()), elem.offset().top);
+				        return Math.sqrt((mouseX - cx) * (mouseX - cx) + (mouseY - cy) * (mouseY - cy));
+				    }
+
+				    var mouseMoveDebounce = _.throttle(function (e) {
+				        mX = e.pageX;
+				        mY = e.pageY;
+				        // not focused and not over element
+				        if (!inputElement.is(":focus") && !inputElement.hasClass("ng-invalid")) {
+				            // on page
+				            if (mX >= inputElement.offset().left) {
+				                distance = calculateDistance(inputElement, mX, mY);
+				                if (distance <= 155) {
+
+				                    distance = 1 - (100 / 150 * distance / 100);
+				                    inputElement.css("border", "1px solid rgba(175,175,175, " + distance + ")");
+				                    inputElement.css("background-color", "rgba(255,255,255, " + distance + ")");
+				                }
+				            }
+
+				        }
+
+				    }, 15);
+
+				    $(document).mousemove(mouseMoveDebounce);
+
+				})();
 
 				$timeout(function(){
 					if(!scope.model){
@@ -1431,7 +1466,7 @@ angular.module("umbraco.directives")
 * @name umbraco.directives.directive:umbSections
 * @restrict E
 **/
-function sectionsDirective($timeout, $window, navigationService, treeService, sectionResource, appState, eventsService) {
+function sectionsDirective($timeout, $window, navigationService, treeService, sectionResource, appState, eventsService, $location) {
     return {
         restrict: "E",    // restrict to an element
         replace: true,   // replace the html element with the template
@@ -1512,7 +1547,8 @@ function sectionsDirective($timeout, $window, navigationService, treeService, se
 
 			scope.sectionClick = function (section) {
 			    navigationService.hideSearch();
-				navigationService.showTree(section.alias);
+			    navigationService.showTree(section.alias);
+			    $location.path("/" + section.alias);
 			};
 
 			scope.sectionDblClick = function(section){
@@ -1949,7 +1985,7 @@ angular.module("umbraco.directives")
         '<ins ng-hide="node.hasChildren" style="width:18px;"></ins>' +        
         '<ins ng-show="node.hasChildren" ng-class="{\'icon-navigation-right\': !node.expanded, \'icon-navigation-down\': node.expanded}" ng-click="load(node)"></ins>' +
         '<i title="#{{node.routePath}}" class="{{node.cssClass}}"></i>' +
-        '<a href ng-click="select(this, node, $event)" on-right-click="altSelect(this, node, $event)">{{node.name}}</a>' +
+        '<a href ng-click="select(this, node, $event)" on-right-click="altSelect(this, node, $event)" ng-bind-html="node.name"></a>' +
         '<a href class="umb-options" ng-hide="!node.menuUrl" ng-click="options(this, node, $event)"><i></i><i></i><i></i></a>' +
         '<div ng-show="node.loading" class="l"><div></div></div>' +
         '</div>' +

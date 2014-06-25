@@ -27,7 +27,7 @@ namespace Our.Umbraco.PropertyConverters
     /// The content picker property editor converter.
     /// </summary>
     [PropertyValueType(typeof(IPublishedContent))]
-    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.Content)]
+    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.ContentCache)]
     public class ContentPickerPropertyConverter : PropertyValueConverterBase
     {
         /// <summary>
@@ -59,7 +59,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             if (source == null)
             {

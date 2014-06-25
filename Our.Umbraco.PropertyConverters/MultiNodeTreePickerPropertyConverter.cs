@@ -24,8 +24,8 @@ namespace Our.Umbraco.PropertyConverters
     /// <summary>
     /// The multi node tree picker property editor value converter.
     /// </summary>
-    [PropertyValueType(typeof(IPublishedContent))]
-    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.Content)]
+    [PropertyValueType(typeof(IEnumerable<IPublishedContent>))]
+    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.ContentCache)]
     public class MultiNodeTreePickerPropertyConverter : PropertyValueConverterBase
     {
         /// <summary>
@@ -57,7 +57,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             // Get the data type "content" or "media" setting
             /*

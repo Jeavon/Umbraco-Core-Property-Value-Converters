@@ -56,7 +56,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             if (source == null)
             {
@@ -121,7 +121,7 @@ namespace Our.Umbraco.PropertyConverters
         /// </returns>
         public PropertyCacheLevel GetPropertyCacheLevel(PublishedPropertyType propertyType, PropertyCacheValue cacheValue)
         {
-            return PropertyCacheLevel.Content;
+            return PropertyCacheLevel.ContentCache;
         }
 
         /// <summary>

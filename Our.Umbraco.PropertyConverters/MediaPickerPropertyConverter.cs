@@ -9,14 +9,14 @@
     using Our.Umbraco.PropertyConverters.Utilities;
 
     [PropertyValueType(typeof(IPublishedContent))]
-    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.Content)]
+    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.ContentCache)]
     public class MediaPickerPropertyConverter : PropertyValueConverterBase
     {
         public override bool IsConverter(PublishedPropertyType propertyType)
         {
             return propertyType.PropertyEditorAlias.Equals(Constants.PropertyEditors.MediaPickerAlias);
         }
-        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             if (source == null) return null;
             var sourceString = source.ToString();

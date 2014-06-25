@@ -15,10 +15,10 @@
 	<!-- PROPERTIES -->
 	<PropertyGroup>
 		<VersionMajor>2</VersionMajor>
-		<VersionMinor>0</VersionMinor>
-		<VersionPatch>5</VersionPatch>
-		<VersionSuffix></VersionSuffix>
-		<UmbracoVersion>7.1.1</UmbracoVersion>
+		<VersionMinor>1</VersionMinor>
+		<VersionPatch>0</VersionPatch>
+		<VersionSuffix>-beta</VersionSuffix>
+		<UmbracoVersion>7.1.5</UmbracoVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>

@@ -23,7 +23,7 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Web;
 
     /// <summary>
-    /// The multiple media picker property editor converter.
+    /// The multiple media picker property value converter.
     /// </summary>
     public class MultipleMediaPickerPropertyConverter : PropertyValueConverterBase, IPropertyValueConverterMeta
     {
@@ -42,7 +42,7 @@ namespace Our.Umbraco.PropertyConverters
         }
 
         /// <summary>
-        /// Convert the raw source data into a object
+        /// Convert the source nodeId into a IPublishedContent or IEnumerable of IPublishedContent (or DynamicPublishedContent) depending on data type setting
         /// </summary>
         /// <param name="propertyType">
         /// The published property type.

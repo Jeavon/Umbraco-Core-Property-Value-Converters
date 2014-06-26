@@ -1,96 +1,159 @@
-﻿namespace Our.Umbraco.PropertyConverters.Models
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RelatedLink.cs" company="OurUmbraco">
+//   Our.Umbraco
+// </copyright>
+// <summary>
+//   Defines the RelatedLink type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Our.Umbraco.PropertyConverters.Models
 {
     using System;
-
-    using Our.Umbraco.PropertyConverters.Models;
 
     using Newtonsoft.Json.Linq;
 
     using global::Umbraco.Web;
 
+    /// <summary>
+    /// The related link model
+    /// </summary>
     public class RelatedLink
     {
-        private string _caption;
-        private bool? _newWindow = null;
-        private bool? _isInternal = null;
-        private string _link;
-        private RelatedLinkType _type;
+        // ReSharper disable InconsistentNaming
+
+        /// <summary>
+        /// The _link item.
+        /// </summary>
         private readonly JToken _linkItem;
 
+        /// <summary>
+        /// The _caption.
+        /// </summary>
+        private string _caption;
+
+        /// <summary>
+        /// The _new window.
+        /// </summary>
+        private bool? _newWindow;
+
+        /// <summary>
+        /// The _is internal.
+        /// </summary>
+        private bool? _isInternal;
+
+        /// <summary>
+        /// The _link.
+        /// </summary>
+        private string _link;
+
+        /// <summary>
+        /// The _type.
+        /// </summary>
+        private RelatedLinkType _type;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RelatedLink"/> class.
+        /// </summary>
+        /// <param name="linkItem">
+        /// The link item.
+        /// </param>
         public RelatedLink(JToken linkItem)
         {
-            _linkItem = linkItem;
+            this._linkItem = linkItem;
         }
 
+        /// <summary>
+        /// Gets the caption.
+        /// </summary>
         public string Caption
         {
             get
             {
-                if (string.IsNullOrEmpty(_caption))
+                if (string.IsNullOrEmpty(this._caption))
                 {
-                    _caption = _linkItem.Value<string>("caption");
+                    this._caption = this._linkItem.Value<string>("caption");
                 }
-                return _caption;
+
+                return this._caption;
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether new window.
+        /// </summary>
         public bool NewWindow
         {
             get
             {
                 if (this._newWindow == null)
                 {
-                    this._newWindow = _linkItem.Value<bool>("newWindow");
+                    this._newWindow = this._linkItem.Value<bool>("newWindow");
                 }
+
                 return this._newWindow.GetValueOrDefault();
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the link is internal.
+        /// </summary>
         public bool IsInternal
         {
             get
             {
                 if (this._isInternal == null)
                 {
-                    this._isInternal = _linkItem.Value<bool>("isInternal");
+                    this._isInternal = this._linkItem.Value<bool>("isInternal");
                 }
+
                 return this._isInternal.GetValueOrDefault();
             }
         }
 
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
         public RelatedLinkType? Type
         {
             get
             {
-                if (Enum.TryParse(_linkItem.Value<string>("type"),true, out _type))
+                if (Enum.TryParse(this._linkItem.Value<string>("type"), true, out this._type))
                 {
-                    return _type;    
+                    return this._type;    
                 }
+
                 return null;
             }
         }
 
+        /// <summary>
+        /// Gets the link.
+        /// </summary>
         public string Link
         {
             get
             {
-                if (string.IsNullOrEmpty(_link))
+                if (string.IsNullOrEmpty(this._link))
                 {
                     if (this.IsInternal)
                     {
-                        if (UmbracoContext.Current == null) return null;
+                        if (UmbracoContext.Current == null)
+                        {
+                            return null;
+                        }
+
                         var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-                        _link = umbHelper.NiceUrl(_linkItem.Value<int>("internal"));
+                        this._link = umbHelper.NiceUrl(this._linkItem.Value<int>("internal"));
                     }
                     else
                     {
-                        _link = _linkItem.Value<string>("link");
+                        this._link = this._linkItem.Value<string>("link");
                     }
                 }
-                return _link;
+
+                return this._link;
             }
         }
-
     }
-
 }

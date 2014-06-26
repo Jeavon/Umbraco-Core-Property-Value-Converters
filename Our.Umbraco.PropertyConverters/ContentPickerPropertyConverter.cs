@@ -12,16 +12,16 @@ namespace Our.Umbraco.PropertyConverters
     using System.Collections.Generic;
     using System.Globalization;
 
+    using Our.Umbraco.PropertyConverters.Utilities;
+
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
 
-    using Our.Umbraco.PropertyConverters.Utilities;
-
     /// <summary>
-    /// The content picker property editor converter.
+    /// The content picker property value converter.
     /// </summary>
     [PropertyValueType(typeof(IPublishedContent))]
     [PropertyValueCache(PropertyCacheValue.Source, PropertyCacheLevel.Content)]
@@ -44,7 +44,7 @@ namespace Our.Umbraco.PropertyConverters
         }
 
         /// <summary>
-        /// Convert the raw string into a nodeId int
+        /// Convert the raw string into a nodeId integer
         /// </summary>
         /// <param name="propertyType">
         /// The published property type.
@@ -65,11 +65,12 @@ namespace Our.Umbraco.PropertyConverters
             {
                 return attemptConvertInt.Result;
             }
+
             return null;
         }
 
         /// <summary>
-        /// Convert the source nodeId into a IPublishedContent
+        /// Convert the source nodeId into a IPublishedContent (or DynamicPublishedContent)
         /// </summary>
         /// <param name="propertyType">
         /// The published property type.

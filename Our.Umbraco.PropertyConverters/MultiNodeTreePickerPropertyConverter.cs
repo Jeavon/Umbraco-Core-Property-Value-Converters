@@ -43,7 +43,7 @@ namespace Our.Umbraco.PropertyConverters
         }
 
         /// <summary>
-        /// Convert the raw source data into a object
+        /// Convert the source nodeId into a IEnumerable of IPublishedContent (or DynamicPublishedContent)
         /// </summary>
         /// <param name="propertyType">
         /// The published property type.

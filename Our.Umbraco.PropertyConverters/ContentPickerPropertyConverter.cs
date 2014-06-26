@@ -9,6 +9,7 @@
 
 namespace Our.Umbraco.PropertyConverters
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
 
@@ -23,11 +24,7 @@ namespace Our.Umbraco.PropertyConverters
     /// <summary>
     /// The content picker property value converter.
     /// </summary>
-    [PropertyValueType(typeof(IPublishedContent))]
-    [PropertyValueCache(PropertyCacheValue.Source, PropertyCacheLevel.Content)]
-    [PropertyValueCache(PropertyCacheValue.Object, PropertyCacheLevel.ContentCache)]
-    [PropertyValueCache(PropertyCacheValue.XPath, PropertyCacheLevel.Content)]
-    public class ContentPickerPropertyConverter : PropertyValueConverterBase
+    public class ContentPickerPropertyConverter : IPropertyValueConverterMeta
     {
         /// <summary>
         /// Checks if this converter can convert the property editor and registers if it can.
@@ -38,7 +35,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public override bool IsConverter(PublishedPropertyType propertyType)
+        public bool IsConverter(PublishedPropertyType propertyType)
         {
             return propertyType.PropertyEditorAlias.Equals(Constants.PropertyEditors.ContentPickerAlias);
         }
@@ -58,7 +55,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
         {
             var attemptConvertInt = source.TryConvertTo<int>();
             if (attemptConvertInt.Success)
@@ -84,7 +81,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
+        public object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             if (source == null)
             {
@@ -108,6 +105,74 @@ namespace Our.Umbraco.PropertyConverters
             }
 
             return source;
+        }
+
+        /// <summary>
+        /// The convert source to xPath.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="preview">
+        /// The preview.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
+        public object ConvertSourceToXPath(PublishedPropertyType propertyType, object source, bool preview)
+        {
+            return source.ToString();
+        }
+
+        /// <summary>
+        /// The CLR type that the value converter returns.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Type"/>.
+        /// </returns>
+        public Type GetPropertyValueType(PublishedPropertyType propertyType)
+        {
+            return typeof(IPublishedContent);
+        }
+
+        /// <summary>
+        /// The get property cache level.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <param name="cacheValue">
+        /// The cache value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="PropertyCacheLevel"/>.
+        /// </returns>
+        public PropertyCacheLevel GetPropertyCacheLevel(PublishedPropertyType propertyType, PropertyCacheValue cacheValue)
+        {
+            PropertyCacheLevel returnLevel;
+            switch (cacheValue)
+            {
+                case PropertyCacheValue.Object:
+                    returnLevel = ConverterHelper.ModeFixed() ? PropertyCacheLevel.ContentCache : PropertyCacheLevel.Request;
+                    break;
+                case PropertyCacheValue.Source:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                case PropertyCacheValue.XPath:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                default:
+                    returnLevel = PropertyCacheLevel.None;
+                    break;
+            }
+
+            return returnLevel;
         }
     }
 }

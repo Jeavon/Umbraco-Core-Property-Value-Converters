@@ -19,12 +19,24 @@ namespace Our.Umbraco.PropertyConverters.Utilities
     public static class ConverterHelper
     {
         /// <summary>
+        /// The mode fixed.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        internal static bool ModeFixed()
+        {
+            var mode = ConfigurationManager.AppSettings["Our.Umbraco.CoreValueConverters:Mode"];
+            return mode != null && (mode == "typed" || mode == "dynamic");
+        }
+
+        /// <summary>
         /// Method checks if converter was executed from Dynamic model code (CurrentPage)
         /// </summary>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool DynamicInvocation()
+        internal static bool DynamicInvocation()
         {
             var mode = ConfigurationManager.AppSettings["Our.Umbraco.CoreValueConverters:Mode"];
 

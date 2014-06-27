@@ -24,9 +24,7 @@ namespace Our.Umbraco.PropertyConverters
     /// <summary>
     /// The multi node tree picker property editor value converter.
     /// </summary>
-    [PropertyValueType(typeof(IEnumerable<IPublishedContent>))]
-    [PropertyValueCache(PropertyCacheValue.All, PropertyCacheLevel.ContentCache)]
-    public class MultiNodeTreePickerPropertyConverter : PropertyValueConverterBase
+    public class MultiNodeTreePickerPropertyConverter : PropertyValueConverterBase, IPropertyValueConverterMeta
     {
         /// <summary>
         /// Checks if this converter can convert the property editor and registers if it can.
@@ -40,6 +38,32 @@ namespace Our.Umbraco.PropertyConverters
         public override bool IsConverter(PublishedPropertyType propertyType)
         {
             return propertyType.PropertyEditorAlias.Equals(Constants.PropertyEditors.MultiNodeTreePickerAlias);
+        }
+
+        /// <summary>
+        /// Convert the raw string into a nodeId integer array
+        /// </summary>
+        /// <param name="propertyType">
+        /// The published property type.
+        /// </param>
+        /// <param name="source">
+        /// The value of the property
+        /// </param>
+        /// <param name="preview">
+        /// The preview.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
+        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        {
+            var nodeIds =
+                source.ToString()
+                .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToArray();
+
+            return nodeIds;
         }
 
         /// <summary>
@@ -69,20 +93,17 @@ namespace Our.Umbraco.PropertyConverters
             var startNodeObj = JsonConvert.DeserializeObject<JObject>(startNodePreValue);
             var pickerType = startNodeObj.GetValue("type").Value<string>();
             */
+
             if (source == null)
             {
                 return null;
             }
 
+            var nodeIds = (int[])source;
+
             var multiNodeTreePicker = Enumerable.Empty<IPublishedContent>();
             if (UmbracoContext.Current != null)
             {
-                var nodeIds =
-                    source.ToString()
-                        .Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(int.Parse)
-                        .ToArray();
-
                 var umbHelper = new UmbracoHelper(UmbracoContext.Current);
 
                 if (nodeIds.Length > 0)
@@ -126,6 +147,54 @@ namespace Our.Umbraco.PropertyConverters
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// The get property cache level.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <param name="cacheValue">
+        /// The cache value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="PropertyCacheLevel"/>.
+        /// </returns>
+        public PropertyCacheLevel GetPropertyCacheLevel(PublishedPropertyType propertyType, PropertyCacheValue cacheValue)
+        {
+            PropertyCacheLevel returnLevel;
+            switch (cacheValue)
+            {
+                case PropertyCacheValue.Object:
+                    returnLevel = ConverterHelper.ModeFixed() ? PropertyCacheLevel.ContentCache : PropertyCacheLevel.Request;
+                    break;
+                case PropertyCacheValue.Source:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                case PropertyCacheValue.XPath:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                default:
+                    returnLevel = PropertyCacheLevel.None;
+                    break;
+            }
+
+            return returnLevel;
+        }
+
+        /// <summary>
+        /// The CLR type that the value converter returns.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Type"/>.
+        /// </returns>
+        public Type GetPropertyValueType(PublishedPropertyType propertyType)
+        {
+            return typeof(IEnumerable<IPublishedContent>);
         }
     }
 }

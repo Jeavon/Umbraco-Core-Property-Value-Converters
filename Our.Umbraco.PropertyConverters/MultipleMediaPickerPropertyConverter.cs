@@ -6,7 +6,6 @@
 //   The multiple media picker property editor converter.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
@@ -20,6 +19,7 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
+   
     using global::Umbraco.Web;
 
     /// <summary>
@@ -39,6 +39,62 @@ namespace Our.Umbraco.PropertyConverters
         public override bool IsConverter(PublishedPropertyType propertyType)
         {
             return propertyType.PropertyEditorAlias.Equals(Constants.PropertyEditors.MultipleMediaPickerAlias);
+        }
+
+        /// <summary>
+        /// Convert the raw string into a nodeId integer array or a single integer
+        /// </summary>
+        /// <param name="propertyType">
+        /// The published property type.
+        /// </param>
+        /// <param name="source">
+        /// The value of the property
+        /// </param>
+        /// <param name="preview">
+        /// The preview.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
+        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        {
+            if (IsMultipleDataType(propertyType.DataTypeId))
+            {
+                var nodeIds =
+                    source.ToString()
+                        .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(int.Parse)
+                        .ToArray();
+                return nodeIds;
+            }
+
+            var attemptConvertInt = source.TryConvertTo<int>();
+            if (attemptConvertInt.Success)
+            {
+                return attemptConvertInt.Result;
+            }
+            else
+            {
+                var nodeIds =
+                   source.ToString()
+                       .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                       .Select(int.Parse)
+                       .ToArray();
+
+                if (nodeIds.Length > 0)
+                {
+                    var error =
+                        string.Format(
+                            "Data type \"{0}\" is not set to allow multiple items but appears to contain multiple items, check the setting and save the data type again",
+                            ApplicationContext.Current.Services.DataTypeService.GetDataTypeDefinitionById(
+                                propertyType.DataTypeId).Name);
+
+                    LogHelper.Warn<MultipleMediaPickerPropertyConverter>(error);
+                    throw new Exception(error);
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -63,8 +119,6 @@ namespace Our.Umbraco.PropertyConverters
                 return null;
             }
 
-            var sourceString = source.ToString();
-
             if (UmbracoContext.Current == null)
             {
                 return null;
@@ -76,12 +130,8 @@ namespace Our.Umbraco.PropertyConverters
 
             if (IsMultipleDataType(propertyType.DataTypeId))
             {
+                var nodeIds = (int[])source;
                 var multiMediaPicker = Enumerable.Empty<IPublishedContent>();
-                var nodeIds =
-                    source.ToString()
-                        .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(int.Parse)
-                        .ToArray();
                 if (nodeIds.Length > 0)
                 {
                     multiMediaPicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
@@ -91,20 +141,9 @@ namespace Our.Umbraco.PropertyConverters
             }
 
             // single value picker
-            int nodeId; // check value is node id
-            if (int.TryParse(sourceString, out nodeId))
-            {
-                return dynamicInvocation ? umbHelper.Media(nodeId) : umbHelper.TypedMedia(nodeId);
-            }
-            else
-            {
-                LogHelper.Warn<MultipleMediaPickerPropertyConverter>(
-                    string.Format(
-                        "Data type \"{0}\" is not set to allow multiple items but appears to contain multiple items, check the setting and save the data type again",
-                        ApplicationContext.Current.Services.DataTypeService.GetDataTypeDefinitionById(propertyType.DataTypeId).Name));
-            }
-
-            return null;
+            var nodeId = (int)source;
+            
+            return dynamicInvocation ? umbHelper.Media(nodeId) : umbHelper.TypedMedia(nodeId);
         }
 
         /// <summary>
@@ -121,7 +160,24 @@ namespace Our.Umbraco.PropertyConverters
         /// </returns>
         public PropertyCacheLevel GetPropertyCacheLevel(PublishedPropertyType propertyType, PropertyCacheValue cacheValue)
         {
-            return PropertyCacheLevel.ContentCache;
+            PropertyCacheLevel returnLevel;
+            switch (cacheValue)
+            {
+                case PropertyCacheValue.Object:
+                    returnLevel = ConverterHelper.ModeFixed() ? PropertyCacheLevel.ContentCache : PropertyCacheLevel.Request;
+                    break;
+                case PropertyCacheValue.Source:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                case PropertyCacheValue.XPath:
+                    returnLevel = PropertyCacheLevel.Content;
+                    break;
+                default:
+                    returnLevel = PropertyCacheLevel.None;
+                    break;
+            }
+
+            return returnLevel;
         }
 
         /// <summary>

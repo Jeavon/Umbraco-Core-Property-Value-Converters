@@ -13,6 +13,7 @@ namespace Our.Umbraco.PropertyConverters
     using System.Collections.Generic;
     using System.Linq;
 
+    using Our.Umbraco.PropertyConverters.Models;
     using Our.Umbraco.PropertyConverters.Utilities;
 
     using global::Umbraco.Core;
@@ -101,52 +102,7 @@ namespace Our.Umbraco.PropertyConverters
 
             var nodeIds = (int[])source;
 
-            var multiNodeTreePicker = Enumerable.Empty<IPublishedContent>();
-            if (UmbracoContext.Current != null)
-            {
-                var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-
-                if (nodeIds.Length > 0)
-                {
-                    var dynamicInvocation = ConverterHelper.DynamicInvocation();   
-                 
-                    var objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeIds[0]);
-
-                    if (objectType == UmbracoObjectTypes.Document)
-                    {
-                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null);
-                    }
-                    else if (objectType == UmbracoObjectTypes.Media)
-                    {
-                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
-                    }
-                    else if (objectType == UmbracoObjectTypes.Member)
-                    {
-                        var members = new List<IPublishedContent>();
-
-                        foreach (var nodeId in nodeIds)
-                        {
-                            var member = umbHelper.TypedMember(nodeId);
-                            if (member != null)
-                            {
-                                members.Add(dynamicInvocation ? member.AsDynamic() : member);
-                            }
-                        }
-
-                        multiNodeTreePicker = members;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-
-                return multiNodeTreePicker;
-            }
-            else
-            {
-                return null;
-            }
+            return new MultiNodeTreePicker(nodeIds);
         }
 
         /// <summary>

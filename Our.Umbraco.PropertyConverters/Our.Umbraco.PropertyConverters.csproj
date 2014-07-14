@@ -220,6 +220,7 @@
   <ItemGroup>
     <Compile Include="Install\ConfigNameSpaceModifier.cs" />
     <Compile Include="Install\UmbracoEvents.cs" />
+    <Compile Include="Models\MultiNodeTreePicker.cs" />
     <Compile Include="Models\RelatedLinks.cs" />
     <Compile Include="Models\RelatedLinkType.cs" />
     <Compile Include="Properties\VersionInfo.cs" />

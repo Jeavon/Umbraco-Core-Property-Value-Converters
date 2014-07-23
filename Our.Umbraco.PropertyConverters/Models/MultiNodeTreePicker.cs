@@ -1,73 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MultiNodeTreePicker.cs" company="OurUmbraco">
+//   Our.Umbraco
+// </copyright>
+// <summary>
+//   Defines the MultiNodeTreePicker type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Our.Umbraco.PropertyConverters.Models
 {
     using System.Collections;
-
-    using global::Umbraco.Core;
-    using global::Umbraco.Core.Models;
-    using global::Umbraco.Web;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Our.Umbraco.PropertyConverters.Utilities;
 
+    using global::Umbraco.Core.Models;
+
+    /// <summary>
+    /// The multi node tree picker.
+    /// </summary>
     public class MultiNodeTreePicker : IEnumerable<IPublishedContent>
     {
-        private readonly List<IPublishedContent> _pickedNodes = new List<IPublishedContent>();
+        /// <summary>
+        /// The picked nodes.
+        /// </summary>
+        private readonly List<IPublishedContent> pickedNodes = new List<IPublishedContent>();
 
-        public override string ToString()
-        {
-            return string.Join(",", _pickedNodes.Select(x => x.Id));
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiNodeTreePicker"/> class.
+        /// </summary>
+        /// <param name="nodeIds">
+        /// The node ids.
+        /// </param>
         public MultiNodeTreePicker(int[] nodeIds)
         {
-            if (UmbracoContext.Current != null)
-            {
-                var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-
-                if (nodeIds.Length > 0)
-                {
-                    var dynamicInvocation = ConverterHelper.DynamicInvocation();
-
-                    var objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeIds[0]);
-
-                    if (objectType == UmbracoObjectTypes.Document)
-                    {
-                        _pickedNodes = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null).ToList();
-                    }
-                    else if (objectType == UmbracoObjectTypes.Media)
-                    {
-                        _pickedNodes = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null).ToList();
-                    }
-                    else if (objectType == UmbracoObjectTypes.Member)
-                    {
-                        var members = new List<IPublishedContent>();
-
-                        foreach (var nodeId in nodeIds)
-                        {
-                            var member = umbHelper.TypedMember(nodeId);
-                            if (member != null)
-                            {
-                                members.Add(dynamicInvocation ? member.AsDynamic() : member);
-                            }
-                        }
-
-                        _pickedNodes = members;
-                    }
-                }
-            }
-            
+            this.pickedNodes = ConverterHelper.FetchPublishedContent(nodeIds);
         }
 
+        /// <summary>
+        /// The ToString method to convert the objects back to the original CSV
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Join(",", this.pickedNodes.Select(x => x.Id));
+        }
+
+        /// <summary>
+        /// The get enumerator.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
         public IEnumerator<IPublishedContent> GetEnumerator()
         {
-            return _pickedNodes.GetEnumerator();
+            return this.pickedNodes.GetEnumerator();
         }
 
+        /// <summary>
+        /// The get enumerator.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

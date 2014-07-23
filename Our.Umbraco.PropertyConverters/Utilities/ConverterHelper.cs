@@ -9,9 +9,14 @@
 
 namespace Our.Umbraco.PropertyConverters.Utilities
 {
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
+
+    using global::Umbraco.Core;
+    using global::Umbraco.Core.Models;
+    using global::Umbraco.Web;
 
     /// <summary>
     /// A helper class for use with value converters
@@ -62,6 +67,56 @@ namespace Our.Umbraco.PropertyConverters.Utilities
             }).ToList();
 
             return invokedTypes.Contains("DynamicPublishedContent");
+        }
+
+        /// <summary>
+        /// Method to return a collection of IPublishedContent from a array of nodeIds
+        /// </summary>
+        /// <param name="nodeIds">
+        /// The node ids.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        internal static List<IPublishedContent> FetchPublishedContent(int[] nodeIds)
+        {
+            if (UmbracoContext.Current != null)
+            {
+                var umbHelper = new UmbracoHelper(UmbracoContext.Current);
+
+                if (nodeIds.Length > 0)
+                {
+                    var objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeIds[0]);
+
+                    if (objectType == UmbracoObjectTypes.Document)
+                    {
+                        return umbHelper.TypedContent(nodeIds).Where(x => x != null).ToList();
+                    }
+
+                    if (objectType == UmbracoObjectTypes.Media)
+                    {
+                        return umbHelper.TypedMedia(nodeIds).Where(x => x != null).ToList();
+                    }
+
+                    if (objectType == UmbracoObjectTypes.Member)
+                    {
+                        var members = new List<IPublishedContent>();
+
+                        foreach (var nodeId in nodeIds)
+                        {
+                            var member = umbHelper.TypedMember(nodeId);
+                            if (member != null)
+                            {
+                                members.Add(member);
+                            }
+                        }
+
+                        return members;
+                    }
+                }
+            }
+
+            return new List<IPublishedContent>();
         }
     }
 }

@@ -35,6 +35,7 @@
                     var dynamicMultiNodeTreePicker = CurrentPage.featuredNews;
                     foreach (var item in dynamicMultiNodeTreePicker)
                     {
+                        <p>@item.GetType()</p>
                         <p>Name: @item.Name</p>
                         if (item.HasValue("title"))
                         {

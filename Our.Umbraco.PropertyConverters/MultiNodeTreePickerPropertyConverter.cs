@@ -10,14 +10,12 @@
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Our.Umbraco.PropertyConverters.Models;
     using Our.Umbraco.PropertyConverters.Utilities;
 
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
@@ -68,7 +66,7 @@ namespace Our.Umbraco.PropertyConverters
         }
 
         /// <summary>
-        /// Convert the source nodeId into a IEnumerable of IPublishedContent (or DynamicPublishedContent)
+        /// Convert the source nodeId into a MultiNodeTreePicker (or IEnumerable of DynamicPublishedContent)
         /// </summary>
         /// <param name="propertyType">
         /// The published property type.
@@ -102,7 +100,9 @@ namespace Our.Umbraco.PropertyConverters
 
             var nodeIds = (int[])source;
 
-            return new MultiNodeTreePicker(nodeIds);
+            var multiNodeTreePicker = new MultiNodeTreePicker(nodeIds);
+
+            return ConverterHelper.DynamicInvocation() ? multiNodeTreePicker.Select(x => x.AsDynamic()) : multiNodeTreePicker;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Our.Umbraco.PropertyConverters
         /// </returns>
         public Type GetPropertyValueType(PublishedPropertyType propertyType)
         {
-            return typeof(IEnumerable<IPublishedContent>);
+            return typeof(MultiNodeTreePicker);
         }
     }
 }

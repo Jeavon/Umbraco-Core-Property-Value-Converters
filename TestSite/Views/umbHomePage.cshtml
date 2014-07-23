@@ -29,20 +29,31 @@
 
                 <h2>Multi node tree picker content</h2>
                 @{
+                    var multiNodeTreePickerString = Model.Content.GetPropertyValue<string>("featuredNews");                   
+                    
                     var typedMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredNews");
                     foreach (var item in typedMultiNodeTreePicker)
                     {
+                        <p>@item.GetType()</p>
                         <p>@item.Name</p>
                     }
+                    
+                    <p>string: @multiNodeTreePickerString</p>
                 }
 
                 <h2>Multi node tree picker media</h2>
                 @{
+                    var multiNodeTreePickerMediaString = Model.Content.GetPropertyValue<string>("featuredMedia");                   
+
+                    
                     var typedMultiNodeTreePickerMedia = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMedia");
                     foreach (var item in typedMultiNodeTreePickerMedia)
                     {
+                        <p>@item.GetType()</p>
                         <p>@item.Name</p>
                     }
+                    
+                    <p>string: @multiNodeTreePickerMediaString</p>
                 }
 
                 <h2>Multi node tree picker members</h2>

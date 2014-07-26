@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Package", "{2DF942A9-A7E7-4769-87EF-0958A4206D28}"
 	ProjectSection(SolutionItems) = preProject
+		BuildPackage\Build.bat = BuildPackage\Build.bat
 		BuildPackage\Package.build.cmd = BuildPackage\Package.build.cmd
 		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
 		BuildPackage\package.nuspec = BuildPackage\package.nuspec

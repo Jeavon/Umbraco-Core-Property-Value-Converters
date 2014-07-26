@@ -1,4 +1,4 @@
-/*! umbraco - v7.1.5 - 2014-06-21
+/*! umbraco - v7.1.5 - 2014-07-26
  * https://github.com/umbraco/umbraco-cms/
  * Copyright (c) 2014 Umbraco HQ;
  * Licensed MIT
@@ -2013,14 +2013,20 @@ function ContentEditController($scope, $routeParams, $q, $timeout, $window, appS
     };
 
     $scope.preview = function (content) {
-        // Chromes popup blocker will kick in if a window is opened 
-        // outwith the initial scoped request. This trick will fix that.
-        var previewWindow = $window.open("/umbraco/views/content/umbpreview.html", "umbpreview");
-        $scope.save().then(function (data) {
-            // Build the correct path so both /#/ and #/ work.
-            var redirect = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + '/dialogs/preview.aspx?id=' + data.id;
-            previewWindow.location.href = redirect;
-        });
+
+        if (!$scope.busy) {            
+            $scope.save().then(function (data) {
+
+                // Chromes popup blocker will kick in if a window is opened 
+                // outwith the initial scoped request. This trick will fix that.
+                var previewWindow = $window.open("/umbraco/views/content/umbpreview.html", "umbpreview");
+
+
+                // Build the correct path so both /#/ and #/ work.
+                var redirect = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + '/dialogs/preview.aspx?id=' + data.id;
+                previewWindow.location.href = redirect;
+            });
+        }        
     };
 
     /** this method is called for all action buttons and then we proxy based on the btn definition */
@@ -4527,8 +4533,8 @@ function listViewController($rootScope, $scope, $routeParams, $injector, notific
         pageSize: 10,
         pageNumber: 1,
         filter: '',
-        orderBy: 'SortOrder',
-        orderDirection: "asc"
+        orderBy: 'UpdateDate',
+        orderDirection: "desc"
     };
 
 
@@ -4574,7 +4580,7 @@ function listViewController($rootScope, $scope, $routeParams, $injector, notific
         contentResource.getChildren(id, $scope.options).then(function (data) {
 
             $scope.listViewResultSet = data;
-            $scope.pagination = [];
+            $scope.pagination = [];            
 
             for (var i = $scope.listViewResultSet.totalPages - 1; i >= 0; i--) {
                 $scope.pagination[i] = { index: i, name: i + 1 };
@@ -4588,7 +4594,8 @@ function listViewController($rootScope, $scope, $routeParams, $injector, notific
     };
 
     //assign debounce method to the search to limit the queries
-    $scope.search = _.debounce(function() {
+    $scope.search = _.debounce(function () {
+        $scope.options.pageNumber = 1;
         $scope.reloadView($scope.contentId);
     }, 100);
 
@@ -5796,6 +5803,11 @@ function sliderController($scope, $log, $element, assetsService, angularHelper) 
             }
         }
 
+        // Initialise model value if not set
+        if (!$scope.model.value) {
+            setModelValueFromSlider(sliderVal);
+        }
+
         //initiate slider, add event handler and get the instance reference (stored in data)
         var slider = $element.find('.slider-item').slider({
             max: $scope.model.config.maxVal,
@@ -5808,16 +5820,21 @@ function sliderController($scope, $log, $element, assetsService, angularHelper) 
             value: sliderVal
         }).on('slideStop', function () {
             angularHelper.safeApply($scope, function () {
-                //Get the value from the slider and format it correctly, if it is a range we want a comma delimited value
-                if ($scope.model.config.enableRange === "1") {
-                    $scope.model.value = slider.getValue().join(",");
-                }
-                else {
-                    $scope.model.value = slider.getValue().toString();
-                }
+                setModelValueFromSlider(slider.getValue());
             });
         }).data('slider');
+    }
 
+    /** Called on start-up when no model value has been applied and on change of the slider via the UI - updates
+        the model with the currently selected slider value(s) **/
+    function setModelValueFromSlider(sliderVal) {
+        //Get the value from the slider and format it correctly, if it is a range we want a comma delimited value
+        if ($scope.model.config.enableRange === "1") {
+            $scope.model.value = sliderVal.join(",");
+        }
+        else {
+            $scope.model.value = sliderVal.toString();
+        }
     }
 
     //tell the assetsService to load the bootstrap slider

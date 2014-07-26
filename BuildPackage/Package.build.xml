@@ -12,14 +12,35 @@
 	<Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
   <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
 
-	<!-- PROPERTIES -->
-	<PropertyGroup>
-		<VersionMajor>2</VersionMajor>
-		<VersionMinor>1</VersionMinor>
-		<VersionPatch>0</VersionPatch>
-		<VersionSuffix>-build1</VersionSuffix>
-		<UmbracoVersion>7.1.5-nightly185</UmbracoVersion>
-	</PropertyGroup>
+  <PropertyGroup>
+    <BaseVersionMajor>2</BaseVersionMajor>
+    <BaseVersionMinor>1</BaseVersionMinor>
+    <BaseVersionPatch>0</BaseVersionPatch>
+    <BaseVersionSuffix>-beta</BaseVersionSuffix>
+    <BaseUmbracoVersion>7.1.5-nightly185</BaseUmbracoVersion>
+  </PropertyGroup>
+  
+  <!-- PROPERTIES -->
+  <Choose>
+    <When Condition="$(APPVEYOR_BUILD_NUMBER) != ''">
+      <PropertyGroup>
+        <VersionMajor>$(BaseVersionMajor)</VersionMajor>
+        <VersionMinor>$(BaseVersionMinor)</VersionMinor>
+        <VersionPatch>$(BaseVersionPatch)</VersionPatch>
+        <VersionSuffix>-build$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
+        <UmbracoVersion>$(BaseUmbracoVersion)</UmbracoVersion>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <VersionMajor>$(BaseVersionMajor)</VersionMajor>
+        <VersionMinor>$(BaseVersionMinor)</VersionMinor>
+        <VersionPatch>$(BaseVersionPatch)</VersionPatch>
+        <VersionSuffix>$(BaseVersionSuffix)</VersionSuffix>
+        <UmbracoVersion>$(BaseUmbracoVersion)</UmbracoVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
 
 	<PropertyGroup>
 		<RootDir>$(MSBuildProjectDirectory)\..</RootDir>

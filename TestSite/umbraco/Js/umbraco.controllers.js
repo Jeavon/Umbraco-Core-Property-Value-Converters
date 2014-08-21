@@ -1,4 +1,4 @@
-/*! umbraco - v7.1.5 - 2014-07-26
+/*! umbraco - v7.1.5 - 2014-08-21
  * https://github.com/umbraco/umbraco-cms/
  * Copyright (c) 2014 Umbraco HQ;
  * Licensed MIT
@@ -352,7 +352,7 @@ function SearchController($scope, searchService, $log, $location, navigationServ
 
     //watch the value change but don't do the search on every change - that's far too many queries
     // we need to debounce
-    $scope.$watch("searchTerm", _.debounce(function () {
+    var debounced = _.debounce(function () {
         if ($scope.searchTerm) {
             $scope.isSearching = true;
             navigationService.showSearch();
@@ -365,7 +365,10 @@ function SearchController($scope, searchService, $log, $location, navigationServ
             navigationService.hideSearch();
             $scope.selectedItem = undefined;
         }
-    }, 100));
+    }, 300);
+
+    
+    $scope.$watch("searchTerm", debounced);
 
 }
 //register it
@@ -3542,7 +3545,7 @@ angular.module("umbraco").controller("Umbraco.PrevalueEditors.MultiColorPickerCo
 
         assetsService.load([
             //"lib/spectrum/tinycolor.js",
-            "lib/spectrum/spectrum.js"			
+            "lib/spectrum/spectrum.js"          
         ]).then(function () {
             var elem = $element.find("input");
             elem.spectrum({
@@ -3602,7 +3605,10 @@ angular.module("umbraco").controller("Umbraco.PrevalueEditors.MultiColorPickerCo
                 });
                 if (!exists) {
                     $scope.model.value.push({ value: $scope.newColor });
-                    $scope.newColor = defaultColor;
+                    //$scope.newColor = defaultColor;
+                    // set colorpicker to default color
+                    //var elem = $element.find("input");
+                    //elem.spectrum("set", $scope.newColor);
                     $scope.hasError = false;
                     return;
                 }
@@ -3799,13 +3805,16 @@ function dateTimePickerController($scope, notificationsService, assetsService, a
 
                     // Get the id of the datepicker button that was clicked
                     var pickerId = $scope.model.alias;
+
                     // Open the datepicker and add a changeDate eventlistener
                     $element.find("div:first")
                         .datetimepicker($scope.model.config)
                         .on("changeDate", applyDate);
 
-                    //now assign the date
-                    $("#datepicker" + pickerId).val($scope.model.value);
+                    if ($scope.model.value) {
+                        //manually assign the date to the plugin
+                        $element.find("div:first").datetimepicker("setValue", $scope.model.value);
+                    }
 
                     //Ensure to remove the event handler when this instance is destroyted
                     $scope.$on('$destroy', function () {
@@ -4788,26 +4797,26 @@ angular.module('umbraco')
 		function openDialog(index){
 			var dialogData = {};
 
-			if(index){
+			if(index !== null && $scope.renderModel[index]) {
 				var macro = $scope.renderModel[index];
 				dialogData = {macroData: macro};
 			}
 			
 			dialogService.macroPicker({
-                dialogData : dialogData,
-                    callback: function(data) {
+				dialogData : dialogData,
+				callback: function(data) {
 
-                    	collectDetails(data);
+					collectDetails(data);
 
-                        //update the raw syntax and the list...
-                        if(index){
-                        	$scope.renderModel[index] = data;
-                        }else{
-                        	$scope.renderModel.push(data);
-                        }
-                    }
-                });
-		}	
+					//update the raw syntax and the list...
+					if(index !== null && $scope.renderModel[index]) {
+						$scope.renderModel[index] = data;
+					} else {
+						$scope.renderModel.push(data);
+					}
+				}
+			});
+		}
 
 
 
@@ -5416,7 +5425,48 @@ angular.module("umbraco")
                     link.link = $scope.newLink;
                 $event.preventDefault();
             };
-            
+
+            $scope.move = function (index, direction) {
+                var temp = $scope.model.value[index];
+                $scope.model.value[index] = $scope.model.value[index + direction];
+                $scope.model.value[index + direction] = temp;                
+            };
+
+            $scope.sortableOptions = {
+                containment: 'parent',
+                cursor: 'move',
+                helper: function (e, ui) {
+                    // When sorting <trs>, the cells collapse.  This helper fixes that: http://www.foliotek.com/devblog/make-table-rows-sortable-using-jquery-ui-sortable/
+                    ui.children().each(function () {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                },
+                items: '> tr',
+                tolerance: 'pointer',
+                update: function (e, ui) {
+                    // Get the new and old index for the moved element (using the URL as the identifier)
+                    var newIndex = ui.item.index();
+                    var movedLinkUrl = ui.item.attr('data-link');
+                    var originalIndex = getElementIndexByUrl(movedLinkUrl);
+
+                    // Move the element in the model
+                    var movedElement = $scope.model.value[originalIndex];
+                    $scope.model.value.splice(originalIndex, 1);
+                    $scope.model.value.splice(newIndex, 0, movedElement);
+                }
+            };
+
+            function getElementIndexByUrl(url) {
+                for (var i = 0; i < $scope.model.value.length; i++) {
+                    if ($scope.model.value[i].link === url) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
             function select(data) {
                 if ($scope.currentEditLink != null) {
                     $scope.currentEditLink.internal = data.id;
@@ -5460,6 +5510,9 @@ angular.module("umbraco")
             var stylesheets = [];
             var styleFormats = [];
             var await = [];
+            if (!editorConfig.maxImageSize && editorConfig.maxImageSize != 0) {
+                editorConfig.maxImageSize = tinyMceService.defaultPrevalues().maxImageSize;
+            }
 
             //queue file loading
             if (typeof tinymce === "undefined") { // Don't reload tinymce if already loaded
@@ -5510,6 +5563,7 @@ angular.module("umbraco")
                     statusbar: false,
                     height: editorConfig.dimensions.height,
                     width: editorConfig.dimensions.width,
+                    maxImageSize: editorConfig.maxImageSize,
                     toolbar: toolbar,
                     content_css: stylesheets.join(','),
                     relative_urls: false,
@@ -5682,6 +5736,9 @@ angular.module("umbraco").controller("Umbraco.PrevalueEditors.RteController",
         }
         if (!$scope.model.value.toolbar) {
             $scope.model.value.toolbar = [];
+        }
+        if (!$scope.model.value.maxImageSize && $scope.model.value.maxImageSize != 0) {
+            $scope.model.value.maxImageSize = cfg.maxImageSize;
         }
 
         tinyMceService.configuration().then(function(config){

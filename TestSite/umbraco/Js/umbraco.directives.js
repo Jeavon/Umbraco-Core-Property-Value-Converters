@@ -1,4 +1,4 @@
-/*! umbraco - v7.1.5 - 2014-07-26
+/*! umbraco - v7.1.5 - 2014-08-21
  * https://github.com/umbraco/umbraco-cms/
  * Copyright (c) 2014 Umbraco HQ;
  * Licensed MIT
@@ -2493,6 +2493,24 @@ angular.module("umbraco.directives")
   });
 
 /**
+* @ngdoc directive
+* @name umbraco.directives.directive:noDirtyCheck
+* @restrict A
+* @description Can be attached to form inputs to prevent them from setting the form as dirty (http://stackoverflow.com/questions/17089090/prevent-input-from-setting-form-dirty-angularjs)
+**/
+function noDirtyCheck() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.focus(function () {
+                ctrl.$pristine = false;
+            });
+        }
+    };
+}
+angular.module('umbraco.directives').directive("noDirtyCheck", noDirtyCheck);
+/**
  * General-purpose validator for ngModel.
  * angular.js comes with several built-in validation mechanism for input fields (ngRequired, ngPattern etc.) but using
  * an arbitrary validation function requires creation of a custom formatters and / or parsers.
@@ -2683,7 +2701,7 @@ angular.module('umbraco.directives.validation')
 * Another thing this directive does is to ensure that any .control-group that contains form elements that are invalid will
 * be marked with the 'error' css class. This ensures that labels included in that control group are styled correctly.
 **/
-function valFormManager(serverValidationManager, $rootScope, $log, $timeout, notificationsService, eventsService) {
+function valFormManager(serverValidationManager, $rootScope, $log, $timeout, notificationsService, eventsService, $routeParams) {
     return {
         require: "form",
         restrict: "A",
@@ -2708,6 +2726,12 @@ function valFormManager(serverValidationManager, $rootScope, $log, $timeout, not
             var savingEventName = attr.savingEvent ? attr.savingEvent : "formSubmitting";
             var savedEvent = attr.savedEvent ? attr.savingEvent : "formSubmitted";
 
+            //This tracks if the user is currently saving a new item, we use this to determine 
+            // if we should display the warning dialog that they are leaving the page - if a new item
+            // is being saved we never want to display that dialog, this will also cause problems when there
+            // are server side validation issues.
+            var isSavingNewItem = false;
+
             //we should show validation if there are any msgs in the server validation collection
             if (serverValidationManager.items.length > 0) {
                 element.addClass(className);
@@ -2716,6 +2740,9 @@ function valFormManager(serverValidationManager, $rootScope, $log, $timeout, not
             //listen for the forms saving event
             scope.$on(savingEventName, function (ev, args) {
                 element.addClass(className);
+
+                //set the flag so we can check to see if we should display the error.
+                isSavingNewItem = $routeParams.create;
             });
 
             //listen for the forms saved event
@@ -2731,7 +2758,7 @@ function valFormManager(serverValidationManager, $rootScope, $log, $timeout, not
             //This handles the 'unsaved changes' dialog which is triggered when a route is attempting to be changed but
             // the form has pending changes
             var locationEvent = $rootScope.$on('$locationChangeStart', function(event, nextLocation, currentLocation) {
-                if (!formCtrl.$dirty) {                   
+                if (!formCtrl.$dirty || isSavingNewItem) {
                     return;
                 }
 

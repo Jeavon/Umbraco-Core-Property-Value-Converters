@@ -1,5 +1,6 @@
 # Change Log #
 
+- v2.1.0 - Added support for Members to Multinode tree picker, implemented IPropertyValueConverterMeta and correctly implemented both ConvertDataToSource and ConvertSourceToObject where applicable
 - v2.0.5 - Fixed usage with dynamics (CurrentPage), also added optional AppSetting to fix mode to dynamic or typed to optimise performance if needed
 - v2.0.4 - Added umbracoRedirect to properties to not convert & automatically add/remove namespace to Razor web.config on install/uninstall
 - v2.0.3-beta - Fix for Content Picker so that it works with Archetype (Archetype doesn't pass in PropertyTypeAlias)

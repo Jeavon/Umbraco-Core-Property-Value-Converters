@@ -48,6 +48,11 @@ namespace Our.Umbraco.PropertyConverters.Models
         private string _link;
 
         /// <summary>
+        /// The _linkDeleted.
+        /// </summary>
+        private bool? _linkDeleted;
+
+        /// <summary>
         /// The _type.
         /// </summary>
         private RelatedLinkType _type;
@@ -61,6 +66,9 @@ namespace Our.Umbraco.PropertyConverters.Models
         public RelatedLink(JToken linkItem)
         {
             this._linkItem = linkItem;
+
+            // get the current Link to set the _linkDeleted is a internal link
+            var currentLink = this.Link;
         }
 
         /// <summary>
@@ -145,6 +153,14 @@ namespace Our.Umbraco.PropertyConverters.Models
 
                         var umbHelper = new UmbracoHelper(UmbracoContext.Current);
                         this._link = umbHelper.NiceUrl(this._linkItem.Value<int>("internal"));
+                        if (this._link.Equals("#"))
+                        {
+                            this._linkDeleted = true;
+                        }
+                        else
+                        {
+                            this._linkDeleted = false;
+                        }                        
                     }
                     else
                     {
@@ -153,6 +169,18 @@ namespace Our.Umbraco.PropertyConverters.Models
                 }
 
                 return this._link;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether deleted.
+        /// </summary>
+        internal bool InternalLinkDeleted
+        {
+            get
+            {
+                var linkDeleted = this._linkDeleted;
+                return linkDeleted != null && (bool)linkDeleted;
             }
         }
     }

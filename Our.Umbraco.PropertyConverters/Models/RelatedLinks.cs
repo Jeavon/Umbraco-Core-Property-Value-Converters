@@ -13,6 +13,8 @@ namespace Our.Umbraco.PropertyConverters.Models
     using System.Collections.Generic;
     using System.Linq;
 
+    using global::Umbraco.Core.Logging;
+
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -49,7 +51,16 @@ namespace Our.Umbraco.PropertyConverters.Models
 
                 foreach (var item in relatedLinks)
                 {
-                    this._relatedLinks.Add(new RelatedLink(item));
+                    var relatedLink = new RelatedLink(item);
+                    if (!relatedLink.InternalLinkDeleted)
+                    {
+                        this._relatedLinks.Add(relatedLink);
+                    }
+                    else
+                    {
+                        LogHelper.Warn<RelatedLinks>(
+                            string.Format("Related Links value converter skipped a link as the node has been unpublished/deleted (Id: {0}), ", relatedLink.IsInternal));
+                    }
                 }
             }
         }

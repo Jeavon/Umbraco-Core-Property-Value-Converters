@@ -59,7 +59,7 @@ namespace Our.Umbraco.PropertyConverters.Models
                     else
                     {
                         LogHelper.Warn<RelatedLinks>(
-                            string.Format("Related Links value converter skipped a link as the node has been unpublished/deleted (Id: {0}), ", relatedLink.IsInternal));
+                            string.Format("Related Links value converter skipped a link as the node has been unpublished/deleted (Internal Link NodeId: {0}, Link Caption: \"{1}\")", relatedLink.Link, relatedLink.Caption));
                     }
                 }
             }

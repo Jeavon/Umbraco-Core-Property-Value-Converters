@@ -15,7 +15,7 @@
   <PropertyGroup>
     <BaseVersionMajor>2</BaseVersionMajor>
     <BaseVersionMinor>1</BaseVersionMinor>
-    <BaseVersionPatch>1</BaseVersionPatch>
+    <BaseVersionPatch>2</BaseVersionPatch>
     <BaseVersionSuffix></BaseVersionSuffix>
     <BaseUmbracoVersion>7.1.5</BaseUmbracoVersion>
   </PropertyGroup>

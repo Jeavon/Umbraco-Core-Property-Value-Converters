@@ -156,6 +156,7 @@ namespace Our.Umbraco.PropertyConverters.Models
                         if (this._link.Equals("#"))
                         {
                             this._linkDeleted = true;
+                            this._link = this._linkItem.Value<string>("internal");
                         }
                         else
                         {

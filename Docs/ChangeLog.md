@@ -1,5 +1,6 @@
 # Change Log #
 
+- v2.1.2 - Fix mistake in RelatedLinks skip logging
 - v2.1.1 - Added a check to skip links in the RelatedLinks if they are internal and deleted or unpublished
 - v2.1.0 - Added support for Members to Multinode tree picker, implemented IPropertyValueConverterMeta and correctly implemented both ConvertDataToSource and ConvertSourceToObject where applicable
 - v2.0.5 - Fixed usage with dynamics (CurrentPage), also added optional AppSetting to fix mode to dynamic or typed to optimise performance if needed

@@ -142,7 +142,7 @@ namespace Our.Umbraco.PropertyConverters
                         }
                     }
 
-                    return returnCollection;
+                    return returnCollection.Where(x => x != null);
                 }
 
                 return multiNodeTreePicker;

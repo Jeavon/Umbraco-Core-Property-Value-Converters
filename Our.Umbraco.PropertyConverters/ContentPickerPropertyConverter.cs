@@ -27,6 +27,15 @@ namespace Our.Umbraco.PropertyConverters
     public class ContentPickerPropertyConverter : IPropertyValueConverterMeta
     {
         /// <summary>
+        /// The properties to exclude.
+        /// </summary>
+        private static readonly List<string> PropertiesToExclude = new List<string>()
+        {
+            Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.InvariantCulture),
+            Constants.Conventions.Content.Redirect.ToLower(CultureInfo.InvariantCulture)
+        };
+
+        /// <summary>
         /// Checks if this converter can convert the property editor and registers if it can.
         /// </summary>
         /// <param name="propertyType">
@@ -88,15 +97,9 @@ namespace Our.Umbraco.PropertyConverters
                 return null;
             }
 
-            var propertiesToExclude = new List<string>()
-                                          {
-                                              Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.InvariantCulture),
-                                              Constants.Conventions.Content.Redirect.ToLower(CultureInfo.InvariantCulture)
-                                          };
-
             if (UmbracoContext.Current != null)
             {
-                if (!(propertyType.PropertyTypeAlias != null && propertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
+                if (!(propertyType.PropertyTypeAlias != null && PropertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
                 {
                     var umbHelper = new UmbracoHelper(UmbracoContext.Current);
 

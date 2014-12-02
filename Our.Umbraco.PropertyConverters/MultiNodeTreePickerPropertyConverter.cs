@@ -14,6 +14,8 @@ namespace Our.Umbraco.PropertyConverters
     using System.Collections.Generic;
     using System.Linq;
 
+    using global::Umbraco.Web.Models;
+
     using Our.Umbraco.PropertyConverters.Utilities;
 
     using global::Umbraco.Core;
@@ -142,7 +144,7 @@ namespace Our.Umbraco.PropertyConverters
                         }
                     }
 
-                    return returnCollection.Where(x => x != null);
+                    return dynamicInvocation ? new DynamicPublishedContentList(returnCollection.Where(x => x != null)) : returnCollection.Where(x => x != null);
                 }
 
                 return multiNodeTreePicker;

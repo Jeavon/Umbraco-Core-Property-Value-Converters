@@ -1,5 +1,6 @@
 # Change Log #
 
+- v2.1.5 - Revert fix for #1 as it's now fixed in Umbraco Core v7.2.1 and will reduce DB hits. Method slightly improved. 
 - v2.1.4 - Fix for issue #4 - MNTP should return a DynamicPublishedContentList when used with dynamics
 - v2.1.3 - Fix for issue #1 - Umbraco Core method EntityService.GetObjectType throws when item has been deleted
 - v2.1.2 - Fix mistake in RelatedLinks skip logging

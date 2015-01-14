@@ -19,3 +19,12 @@ build: off
 artifacts:
   - path: BuildPackage\Package\*.nupkg
   - path: BuildPackage\Package\*.zip
+
+deploy:
+  - provider: NuGet
+    server: https://www.myget.org/F/umbraco-core-property-value-converters/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+    on:
+      branch: v2

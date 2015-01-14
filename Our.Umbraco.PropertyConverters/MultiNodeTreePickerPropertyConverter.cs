@@ -105,6 +105,7 @@ namespace Our.Umbraco.PropertyConverters
             var nodeIds = (int[])source;
 
             var multiNodeTreePicker = Enumerable.Empty<IPublishedContent>();
+
             if (UmbracoContext.Current != null)
             {
                 var umbHelper = new UmbracoHelper(UmbracoContext.Current);
@@ -113,38 +114,45 @@ namespace Our.Umbraco.PropertyConverters
                 {
                     var dynamicInvocation = ConverterHelper.DynamicInvocation();
 
-                    var returnCollection = new List<IPublishedContent>();
+                    var objectType = UmbracoObjectTypes.Unknown;
 
                     foreach (var nodeId in nodeIds)
                     {
-                        var objectType = UmbracoObjectTypes.Unknown;
-                        try
+                        objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeId);
+                        if (objectType != UmbracoObjectTypes.Unknown)
                         {
-                            objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeId);
-                        }
-                        catch (Exception ex)
-                        {
-                            // workaround for U4-5698, nothing to catch
-                        }
-
-                        if (objectType == UmbracoObjectTypes.Document)
-                        {
-                            var multiNodeTreePickerContentItem = umbHelper.TypedContent(nodeId);
-                            returnCollection.Add(dynamicInvocation ? multiNodeTreePickerContentItem.AsDynamic() : multiNodeTreePickerContentItem);
-                        }
-                        else if (objectType == UmbracoObjectTypes.Media)
-                        {
-                            var multiNodeTreePickerMediaItem = umbHelper.TypedMedia(nodeId);
-                            returnCollection.Add(dynamicInvocation ? multiNodeTreePickerMediaItem.AsDynamic() : multiNodeTreePickerMediaItem);
-                        }
-                        else if (objectType == UmbracoObjectTypes.Member)
-                        {
-                            var member = umbHelper.TypedMember(nodeId);
-                            returnCollection.Add(dynamicInvocation ? member.AsDynamic() : member);
+                            break;
                         }
                     }
 
-                    return dynamicInvocation ? new DynamicPublishedContentList(returnCollection.Where(x => x != null)) : returnCollection.Where(x => x != null);
+                    if (objectType == UmbracoObjectTypes.Document)
+                    {
+                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null);
+                    }
+                    else if (objectType == UmbracoObjectTypes.Media)
+                    {
+                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
+                    }
+                    else if (objectType == UmbracoObjectTypes.Member)
+                    {
+                        var members = new List<IPublishedContent>();
+
+                        foreach (var nodeId in nodeIds)
+                        {
+                            var member = umbHelper.TypedMember(nodeId);
+                            if (member != null)
+                            {
+                                members.Add(dynamicInvocation ? member.AsDynamic() : member);
+                            }
+                        }
+
+                        multiNodeTreePicker = dynamicInvocation ? new DynamicPublishedContentList(members) : members.Where(x => x != null);
+
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
 
                 return multiNodeTreePicker;

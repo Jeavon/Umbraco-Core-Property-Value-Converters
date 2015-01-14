@@ -33,6 +33,9 @@
                 <h2>Dynamic Multi node tree picker</h2>
                 @{
                     var dynamicMultiNodeTreePicker = CurrentPage.featuredNews;
+
+                    <p>@dynamicMultiNodeTreePicker.GetType()</p>
+                    
                     foreach (var item in dynamicMultiNodeTreePicker)
                     {
                         <p>Name: @item.Name</p>
@@ -46,6 +49,9 @@
                 <h2>Dynamic Multi node tree picker members</h2>
                 @{
                     var dynamicMultiNodeTreePickerMembers = CurrentPage.featuredMember;
+
+                    <p>@dynamicMultiNodeTreePickerMembers.GetType()</p>
+
                     foreach (var item in dynamicMultiNodeTreePickerMembers)
                     {
                         <p>@item.GetType()</p>

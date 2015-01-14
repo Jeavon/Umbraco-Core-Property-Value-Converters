@@ -104,7 +104,7 @@ namespace Our.Umbraco.PropertyConverters
 
             var nodeIds = (int[])source;
 
-            var multiNodeTreePicker = Enumerable.Empty<IPublishedContent>();
+            var multiNodeTreePicker = new List<IPublishedContent>();
 
             if (UmbracoContext.Current != null)
             {
@@ -116,43 +116,20 @@ namespace Our.Umbraco.PropertyConverters
 
                     var objectType = UmbracoObjectTypes.Unknown;
 
-                    foreach (var nodeId in nodeIds)
+                    foreach(var nodeId in nodeIds)
                     {
-                        objectType = ApplicationContext.Current.Services.EntityService.GetObjectType(nodeId);
-                        if (objectType != UmbracoObjectTypes.Unknown)
+                        var multiNodeTreePickerItem = GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Document, umbHelper.TypedContent)
+                                    ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Media, umbHelper.TypedMedia)
+                                    ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Member, umbHelper.TypedMember);
+
+
+                        if(multiNodeTreePickerItem != null)
                         {
-                            break;
+                            multiNodeTreePicker.Add(dynamicInvocation ? multiNodeTreePickerItem.AsDynamic() : multiNodeTreePickerItem);
                         }
                     }
 
-                    if (objectType == UmbracoObjectTypes.Document)
-                    {
-                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Content(nodeIds) : umbHelper.TypedContent(nodeIds).Where(x => x != null);
-                    }
-                    else if (objectType == UmbracoObjectTypes.Media)
-                    {
-                        multiNodeTreePicker = dynamicInvocation ? umbHelper.Media(nodeIds) : umbHelper.TypedMedia(nodeIds).Where(x => x != null);
-                    }
-                    else if (objectType == UmbracoObjectTypes.Member)
-                    {
-                        var members = new List<IPublishedContent>();
-
-                        foreach (var nodeId in nodeIds)
-                        {
-                            var member = umbHelper.TypedMember(nodeId);
-                            if (member != null)
-                            {
-                                members.Add(dynamicInvocation ? member.AsDynamic() : member);
-                            }
-                        }
-
-                        multiNodeTreePicker = dynamicInvocation ? new DynamicPublishedContentList(members) : members.Where(x => x != null);
-
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return dynamicInvocation ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null)) : multiNodeTreePicker.Where(x => x != null);
                 }
 
                 return multiNodeTreePicker;
@@ -209,6 +186,33 @@ namespace Our.Umbraco.PropertyConverters
         public Type GetPropertyValueType(PublishedPropertyType propertyType)
         {
             return typeof(IEnumerable<IPublishedContent>);
+        }
+
+        /// <summary>
+        /// Attempt to get an IPublishedContent instance based on ID and content type
+        /// </summary>
+        /// <param name="nodeId">The content node ID</param>
+        /// <param name="actualType">The type of content being requested</param>
+        /// <param name="expectedType">The type of content expected/supported by <paramref name="contentFetcher"/></param>
+        /// <param name="contentFetcher">A function to fetch content of type <paramref name="expectedType"/></param>
+        /// <returns>The requested content, or null if either it does not exist or <paramref name="actualType"/> does not match <paramref name="expectedType"/></returns>
+        private IPublishedContent GetPublishedContent(int nodeId, ref UmbracoObjectTypes actualType, UmbracoObjectTypes expectedType, Func<int,  IPublishedContent> contentFetcher)
+        {
+            // is the actual type supported by the content fetcher?
+            if(actualType != UmbracoObjectTypes.Unknown && actualType != expectedType)
+            {
+                // no, return null
+                return null;
+            }
+
+            // attempt to get the content
+            var content = contentFetcher(nodeId);
+            if(content != null)
+            {
+                // if we found the content, assign the expected type to the actual type so we don't have to keep looking for other types of content
+                actualType = expectedType;
+            }
+            return content;
         }
     }
 }

@@ -2,7 +2,7 @@
 <umbPackage>
 	<info>
 		<package>
-			<name>Umbraco Core Property Value Converters</name>
+			<name></name>
 			<version>0.0.0</version>
 			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
 			<url>http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters</url>
@@ -17,9 +17,7 @@
 			<website>http://our.umbraco.org</website>
 		</author>
 		<readme>
-      <![CDATA[
-		Visit https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters/blob/v2/README.md for information on how to use this package
-		]]></readme>
+      <![CDATA[]]></readme>
 	</info>
 
 	<DocumentTypes />

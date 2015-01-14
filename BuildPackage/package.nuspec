@@ -3,20 +3,20 @@
     <metadata>
         <id>Our.Umbraco.CoreValueConverters</id>
         <version>0.0.0</version>
-        <title>Umbraco Core Property Value Converters</title>
+        <title></title>
         <authors>The Umbraco Community</authors>
         <owners>The Umbraco Community</owners>
         <projectUrl>https://github.com/Jeavon/Umbraco-Core-Property-Value-Converters</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multiple Media Picker, Multinode Tree Picker and Related Links property editors from strings to objects.</description>
-        <summary>This package implements property value converters for the Umbraco Core property editors so that they return objects instead of strings.</summary>
+        <description></description>
+        <summary></summary>
         <copyright>The Umbraco Community</copyright>
         <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
         <language>en-GB</language>
         <tags>umbraco</tags>
         <dependencies>
-            <dependency id="UmbracoCms.Core" version="7.2.1" />
+            <dependency id="UmbracoCms.Core" version="0.0.0" />
         </dependencies>
     </metadata>    
 </package>

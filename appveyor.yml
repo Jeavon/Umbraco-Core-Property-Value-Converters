@@ -7,7 +7,7 @@ branches:
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
-
+install:
   - cmd: set UMBRACO_PACKAGE_PRERELEASE_SUFFIX=
   - cmd: set UMBRACO_PACKAGE_MIN_VERSION=7.2.1
   - cmd: cd BuildPackage

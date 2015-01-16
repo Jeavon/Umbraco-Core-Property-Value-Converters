@@ -106,33 +106,34 @@ namespace Our.Umbraco.PropertyConverters
 
             var multiNodeTreePicker = new List<IPublishedContent>();
 
+            var dynamicInvocation = ConverterHelper.DynamicInvocation();
+
             if (UmbracoContext.Current != null)
             {
                 var umbHelper = new UmbracoHelper(UmbracoContext.Current);
 
                 if (nodeIds.Length > 0)
                 {
-                    var dynamicInvocation = ConverterHelper.DynamicInvocation();
 
                     var objectType = UmbracoObjectTypes.Unknown;
 
-                    foreach(var nodeId in nodeIds)
+                    foreach (var nodeId in nodeIds)
                     {
                         var multiNodeTreePickerItem = GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Document, umbHelper.TypedContent)
                                     ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Media, umbHelper.TypedMedia)
                                     ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Member, umbHelper.TypedMember);
 
-
-                        if(multiNodeTreePickerItem != null)
+                        if (multiNodeTreePickerItem != null)
                         {
                             multiNodeTreePicker.Add(dynamicInvocation ? multiNodeTreePickerItem.AsDynamic() : multiNodeTreePickerItem);
                         }
                     }
 
-                    return dynamicInvocation ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null)) : multiNodeTreePicker.Where(x => x != null);
                 }
 
-                return multiNodeTreePicker;
+                return dynamicInvocation
+                           ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
+                           : multiNodeTreePicker.AsEnumerable().Where(x => x != null);
             }
             else
             {
@@ -196,10 +197,10 @@ namespace Our.Umbraco.PropertyConverters
         /// <param name="expectedType">The type of content expected/supported by <paramref name="contentFetcher"/></param>
         /// <param name="contentFetcher">A function to fetch content of type <paramref name="expectedType"/></param>
         /// <returns>The requested content, or null if either it does not exist or <paramref name="actualType"/> does not match <paramref name="expectedType"/></returns>
-        private IPublishedContent GetPublishedContent(int nodeId, ref UmbracoObjectTypes actualType, UmbracoObjectTypes expectedType, Func<int,  IPublishedContent> contentFetcher)
+        private IPublishedContent GetPublishedContent(int nodeId, ref UmbracoObjectTypes actualType, UmbracoObjectTypes expectedType, Func<int, IPublishedContent> contentFetcher)
         {
             // is the actual type supported by the content fetcher?
-            if(actualType != UmbracoObjectTypes.Unknown && actualType != expectedType)
+            if (actualType != UmbracoObjectTypes.Unknown && actualType != expectedType)
             {
                 // no, return null
                 return null;
@@ -207,7 +208,7 @@ namespace Our.Umbraco.PropertyConverters
 
             // attempt to get the content
             var content = contentFetcher(nodeId);
-            if(content != null)
+            if (content != null)
             {
                 // if we found the content, assign the expected type to the actual type so we don't have to keep looking for other types of content
                 actualType = expectedType;

@@ -30,6 +30,9 @@
                 <h2>Multi node tree picker content</h2>
                 @{
                     var typedMultiNodeTreePicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredNews");
+
+                    <p>@typedMultiNodeTreePicker.GetType()</p>
+
                     foreach (var item in typedMultiNodeTreePicker)
                     {
                         <p>@item.Name</p>
@@ -39,6 +42,9 @@
                 <h2>Multi node tree picker media</h2>
                 @{
                     var typedMultiNodeTreePickerMedia = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMedia");
+
+                    <p>@typedMultiNodeTreePickerMedia.GetType()</p>
+
                     foreach (var item in typedMultiNodeTreePickerMedia)
                     {
                         <p>@item.Name</p>
@@ -48,6 +54,9 @@
                 <h2>Multi node tree picker members</h2>
                 @{
                     var typedMultiNodeTreePickerMembers = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMember");
+
+                    <p>@typedMultiNodeTreePickerMembers.GetType()</p>
+
                     foreach (var item in typedMultiNodeTreePickerMembers)
                     {
                         <p>@item.GetType()</p>

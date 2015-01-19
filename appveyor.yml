@@ -4,6 +4,7 @@ version: 2.1.5.{build}
 branches:
   only:
     - v2
+    - v2-release
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta

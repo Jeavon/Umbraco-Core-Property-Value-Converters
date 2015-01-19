@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OurUmbraco.PropertyConverters")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("The Umbraco Community")]
 [assembly: AssemblyProduct("OurUmbraco.PropertyConverters")]
-[assembly: AssemblyCopyright("Copyright ?  2014")]
+[assembly: AssemblyCopyright("Copyright The Umbraco Community 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

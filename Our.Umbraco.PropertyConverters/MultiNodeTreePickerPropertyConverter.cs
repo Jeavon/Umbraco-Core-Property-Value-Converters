@@ -133,7 +133,7 @@ namespace Our.Umbraco.PropertyConverters
 
                 return dynamicInvocation
                            ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
-                           : multiNodeTreePicker.AsEnumerable().Where(x => x != null);
+                           : multiNodeTreePicker.Yield().Where(x => x != null);
             }
             else
             {
@@ -215,5 +215,6 @@ namespace Our.Umbraco.PropertyConverters
             }
             return content;
         }
+
     }
 }

@@ -9,6 +9,7 @@
 
 namespace Our.Umbraco.PropertyConverters.Utilities
 {
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
@@ -62,6 +63,14 @@ namespace Our.Umbraco.PropertyConverters.Utilities
             }).ToList();
 
             return invokedTypes.Contains("DynamicPublishedContent");
+        }
+
+        internal static IEnumerable<T> Yield<T>(this IEnumerable<T> source)
+        {
+            foreach (var element in source)
+            {
+                yield return element;
+            }
         }
     }
 }

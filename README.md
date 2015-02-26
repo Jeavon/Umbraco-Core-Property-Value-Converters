@@ -8,7 +8,7 @@ Umbraco Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-p
 <br/>Nuget Package: `Install-Package Our.Umbraco.CoreValueConverters`
 <br/>MyGet Latest Build Package: [https://www.myget.org/gallery/umbraco-core-property-value-converters](https://www.myget.org/gallery/umbraco-core-property-value-converters)
 
-Once installed you cannot access the original raw value of the property by using `Model.Content.GetPropertyValue("propertyAlias")` however you can access it by using  `Model.Content.GetProperty("propertyAlias").Value.ToString()`
+Once installed you cannot access the original raw value of the property by using `Model.Content.GetPropertyValue("propertyAlias")` however you can access it by using  `Model.Content.GetProperty("propertyAlias").DataValue.ToString()`
 
 The v2 package for Umbraco v7 currently implements converters for the following built-in Umbraco property editors:
 

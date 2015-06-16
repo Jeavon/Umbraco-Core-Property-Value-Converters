@@ -1,6 +1,9 @@
 # version format
 version: 2.1.6.{build}
 
+cache:
+  - packages -> **\packages.config              # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+
 branches:
   only:
     - v2

@@ -5,6 +5,8 @@ branches:
   only:
     - v2
     - v2-release
+    - v3
+    - v3-release
 
 # UMBRACO_PACKAGE_PRERELEASE_SUFFIX will only be used for Release builds
 # example UMBRACO_PACKAGE_PRERELEASE_SUFFIX=beta
@@ -45,3 +47,27 @@ deploy:
     artifact: /.*\.nupkg/
     on:
       branch: v2-release
+
+    - provider: NuGet
+    server: https://www.myget.org/F/umbraco-core-property-value-converters/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+    on:
+      branch: v3
+
+  - provider: NuGet
+    server: https://www.myget.org/F/umbraco-core-property-value-converters/
+    api_key:
+      secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
+    artifact: /.*\.nupkg/
+    on:
+      branch: v3-release
+
+  - provider: NuGet
+    server: 
+    api_key:
+      secure: adk3pI9HCByZg2VRxplX9UR6qHf97bA3as6dusxLswCKI8BQQE8DO5a0frLrI+EO
+    artifact: /.*\.nupkg/
+    on:
+      branch: v3-release

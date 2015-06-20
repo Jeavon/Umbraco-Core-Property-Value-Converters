@@ -8,18 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Package", "{2DF942A9-A7E7-4769-87EF-0958A4206D28}"
-	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		BuildPackage\Build.bat = BuildPackage\Build.bat
-		BuildPackage\Package.build.xml = BuildPackage\Package.build.xml
-		BuildPackage\package.nuspec = BuildPackage\package.nuspec
-		BuildPackage\Package.xml = BuildPackage\Package.xml
-		BuildPackage\Test.bat = BuildPackage\Test.bat
-		BuildPackage\views.web.config.install.xdt = BuildPackage\views.web.config.install.xdt
-		BuildPackage\views.web.config.uninstall.xdt = BuildPackage\views.web.config.uninstall.xdt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSite", "TestSite\TestSite.csproj", "{B49ECE19-FBB7-4D1B-8973-FD7CE43DC0E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.PropertyConverters", "Our.Umbraco.PropertyConverters\Our.Umbraco.PropertyConverters.csproj", "{62F2EB6E-7889-4EE2-967D-0332188E172B}"
@@ -32,6 +20,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Docs\MultiNodeTreePicker.md = Docs\MultiNodeTreePicker.md
 		Docs\MultipleMediaPicker.md = Docs\MultipleMediaPicker.md
 		Docs\RelatedLinks.md = Docs\RelatedLinks.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildPackage", "BuildPackage", "{49DA7475-B399-4216-A863-6A731DDF792B}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		BuildPackage\Build.bat = BuildPackage\Build.bat
+		BuildPackage\LocalBuild.bat = BuildPackage\LocalBuild.bat
+		BuildPackage\package.nuspec = BuildPackage\package.nuspec
+		BuildPackage\package.proj = BuildPackage\package.proj
+		BuildPackage\package.xml = BuildPackage\package.xml
+		BuildPackage\views.web.config.install.xdt = BuildPackage\views.web.config.install.xdt
+		BuildPackage\views.web.config.uninstall.xdt = BuildPackage\views.web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Global
@@ -53,7 +53,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2DF942A9-A7E7-4769-87EF-0958A4206D28} = {167DF588-4912-492B-9DE2-83B1BD8438A7}
 		{859D7DB9-182A-4544-B76D-3DFF24B53FBF} = {167DF588-4912-492B-9DE2-83B1BD8438A7}
+		{49DA7475-B399-4216-A863-6A731DDF792B} = {167DF588-4912-492B-9DE2-83B1BD8438A7}
 	EndGlobalSection
 EndGlobal

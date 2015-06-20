@@ -215,6 +215,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageCropperPropertyConverter.cs" />
     <Compile Include="Install\ConfigNameSpaceModifier.cs" />
     <Compile Include="Install\UmbracoEvents.cs" />
     <Compile Include="Models\RelatedLinks.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="MultiNodeTreePickerPropertyConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ConverterHelper.cs" />
+    <Compile Include="Utilities\ImageCropperBaseExtensions.cs" />
+    <Compile Include="Utilities\ImageCropperTemplateExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

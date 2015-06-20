@@ -189,3 +189,5 @@ TestSite/App_Data/NuGetBackup/*
 # =========================
 TestSite/App_Data/cache/*
 TestSite/Media/***/Cached/*
+
+BuildPackage/artifacts/*

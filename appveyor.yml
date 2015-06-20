@@ -51,6 +51,7 @@ deploy:
 
   - provider: NuGet
     server: https://www.myget.org/F/umbraco-core-property-value-converters/
+    symbol_server: https://nuget.symbolsource.org/MyGet/umbraco-core-property-value-converters
     api_key:
       secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
     artifact: /.*\.nupkg/
@@ -59,6 +60,7 @@ deploy:
 
   - provider: NuGet
     server: https://www.myget.org/F/umbraco-core-property-value-converters/
+    symbol_server: https://nuget.symbolsource.org/MyGet/umbraco-core-property-value-converters
     api_key:
       secure: SASQGWG/4zNns7bwSSsJ5RPvKcKfJsBeEPuw69wsVPA3PO739QmzVtc5VwQwgvbr
     artifact: /.*\.nupkg/

@@ -19,6 +19,7 @@
     <PackageName>Umbraco Core Property Value Converters</PackageName>
     <MinUmbracoVersion>7.2.1</MinUmbracoVersion>
     <Readme>This package implements property value converters for the Umbraco Core property editors. It converts the Content Picker, Media Picker, Multiple Media Picker, Multinode Tree Picker and Related Links property editors from strings to objects.</Readme>
+    <Summary>This package implements property value converters for the Umbraco Core property editors so that they return objects instead of strings.</Summary>
     <AuthorName>The Umbraco Community</AuthorName>
     <AuthorUrl>http://our.umbraco.org</AuthorUrl>
     <PackageLicenseName>MIT license</PackageLicenseName>
@@ -161,7 +162,7 @@
 			WorkingDirectory="$(BuildNuGetDir)"
 			Title="$(PackageName)"
 			Description="$(Readme)"
-			Summary="$(Readme)"
+			Summary="$(Summary)"
 			Version="$(ProductVersion)"
 			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
 			Authors="$(AuthorName)"

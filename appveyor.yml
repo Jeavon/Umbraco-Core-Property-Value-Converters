@@ -1,3 +1,5 @@
+os: Visual Studio 2015
+
 # version format
 version: 3.0.0.{build}
 

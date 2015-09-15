@@ -1,12 +1,10 @@
-﻿using Our.Umbraco.PropertyConverters.Models;
+﻿using System.Globalization;
+using System.Text;
+using Our.Umbraco.PropertyConverters.Models;
+using Umbraco.Web.Models;
 
-namespace Crumpled.Logic.Utilities
+namespace Our.Umbraco.PropertyConverters.Utilities
 {
-    using System.Globalization;
-    using System.Text;
-
-    using Umbraco.Web.Models;
-
     public static class ImageCropperTemplateExtensions
     {
         public static string GetCropUrl(this Image image, string cropAlias)

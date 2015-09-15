@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using Umbraco.Core.Logging;
+using Umbraco.Web.Models;
 
-namespace Crumpled.Logic.Utilities
+namespace Our.Umbraco.PropertyConverters.Utilities
 {
-    using System.Globalization;
-
-    using Newtonsoft.Json;
-
-    using Umbraco.Core.Logging;
-    using Umbraco.Web.Models;
-
     internal static class ImageCropperBaseExtensions
     {
 

@@ -1,3 +1,4 @@
+@using Our.Umbraco.PropertyConverters.Utilities
 @using Umbraco.Web.Models
 @inherits UmbracoTemplatePage
 @{
@@ -71,6 +72,9 @@
                     var typedMultiMediaPicker = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("multiMedia");
                     foreach (var item in typedMultiMediaPicker)
                     {
+                        var imgSrc = Umbraco.TypedImage(item).GetCropUrl("Thumb");
+                        <img src="@imgSrc" style="width:200px" />
+
                         var cropper = item.GetPropertyValue<ImageCropDataSet>("umbracoFile");
                         <img src="@cropper.Src" style="width:200px" />
                         @item.Name @item.GetType()

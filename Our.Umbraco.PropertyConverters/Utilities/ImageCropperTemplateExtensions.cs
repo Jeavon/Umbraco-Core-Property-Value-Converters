@@ -1,4 +1,6 @@
-﻿namespace Crumpled.Logic.Utilities
+﻿using Our.Umbraco.PropertyConverters.Models;
+
+namespace Crumpled.Logic.Utilities
 {
     using System.Globalization;
     using System.Text;
@@ -7,6 +9,11 @@
 
     public static class ImageCropperTemplateExtensions
     {
+        public static string GetCropUrl(this Image image, string cropAlias)
+        {
+            return image.Cropper.GetCropUrl(cropAlias: cropAlias, useCropDimensions: true);
+        }
+
         public static string GetCropUrl(this ImageCropDataSet imageCropper, string cropAlias)
         {
             return imageCropper.GetCropUrl(cropAlias: cropAlias, useCropDimensions: true);

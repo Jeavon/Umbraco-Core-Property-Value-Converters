@@ -1,4 +1,6 @@
+@using Our.Umbraco.Ditto
 @using Our.Umbraco.PropertyConverters.Utilities
+@using TestSite.Logic.Models
 @using Umbraco.Web.Models
 @inherits UmbracoTemplatePage
 @{
@@ -91,11 +93,27 @@
                     }
                 }
 
+                <h2>Related Links Ditto</h2>
+                @{
+                    var model = Model.Content.As<Home>();
+                    var relatedLinks = model.RelatedLinks;
+                    if (relatedLinks!= null && relatedLinks.Any())
+                    {
+                        <ul>
+                            @foreach (var item in relatedLinks)
+                            {
+                                var linkTarget = (item.NewWindow) ? "_blank" : null;
+                                <li><a href="@item.Link" target="@linkTarget">@item.Caption</a></li>
+                            }
+                        </ul>
+                    }
+                }
+
                 <h2>Related Links</h2>
                 @{
                     var typedRelatedLinksConverted = Model.Content.GetPropertyValue<RelatedLinks>("relatedLinks");
 
-                    if (typedRelatedLinksConverted.Any())
+                    if (typedRelatedLinksConverted != null && typedRelatedLinksConverted.Any())
                     {
                         <ul>
                             @foreach (var item in typedRelatedLinksConverted)

@@ -4,8 +4,9 @@
 @using Umbraco.Web.Models
 @inherits UmbracoTemplatePage
 @{
-    Layout = "umbLayout.cshtml";
-}
+    Layout = "umbLayout.cshtml"; 
+    var dittoHomeModel = Model.Content.As<Home>();
+    }
 @{ Html.RenderPartial("umbHomepageBanner"); }
 <!-- Main -->
 <div id="main-wrapper">
@@ -21,13 +22,33 @@
                         <p>@typedContentPicker.Name</p>
                     }
                 }
+                <h2>Content picker ditto</h2>
+                @{
+                    var dittoContentPicker = dittoHomeModel.ContentPicker;
+                    if (dittoContentPicker != null)
+                    {
+                        <p>@dittoContentPicker.GetType()</p>
+                        <p>@dittoContentPicker.Name</p>
+                    }
+                }
+
                 <h2>Media picker</h2>
                 @{
                     var typedMediaPicker = Model.Content.GetPropertyValue<IPublishedContent>("mainImage");
                     if (typedMediaPicker != null)
                     {
                         <p>@typedMediaPicker.GetType()</p>
-                        <p>@typedMediaPicker.Url</p>
+                        <p>** NOT WORKING DUE TO CROP CONVERTER ** @typedMediaPicker.Url</p>
+                    }
+                }
+
+                <h2>Media picker ditto</h2>
+                @{
+                    var dittoMediaPicker = dittoHomeModel.MainImage;
+                    if (dittoMediaPicker != null)
+                    {
+                        <p>@dittoMediaPicker.GetType()</p>
+                        <p>@dittoMediaPicker.Url</p>
                     }
                 }
 
@@ -38,6 +59,18 @@
                     <p>@typedMultiNodeTreePicker.GetType()</p>
 
                     foreach (var item in typedMultiNodeTreePicker)
+                    {
+                        <p>@item.Name</p>
+                    }
+                }
+
+                <h2>Multi node tree picker content Ditto</h2>
+                @{
+                    var dittoMultiNodeTreePicker = dittoHomeModel.FeaturedNews;
+
+                    <p>@dittoMultiNodeTreePicker.GetType()</p>
+
+                    foreach (var item in dittoMultiNodeTreePicker)
                     {
                         <p>@item.Name</p>
                     }
@@ -55,6 +88,18 @@
                     }
                 }
 
+                <h2>Multi node tree picker media Ditto</h2>
+                @{
+                    var dittoMultiNodeTreePickerMedia = dittoHomeModel.FeaturedMedia;
+
+                    <p>@dittoMultiNodeTreePickerMedia.GetType()</p>
+
+                    foreach (var item in dittoMultiNodeTreePickerMedia)
+                    {
+                        <p>@item.Name</p>
+                    }
+                }
+
                 <h2>Multi node tree picker members</h2>
                 @{
                     var typedMultiNodeTreePickerMembers = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredMember");
@@ -62,6 +107,20 @@
                     <p>@typedMultiNodeTreePickerMembers.GetType()</p>
 
                     foreach (var item in typedMultiNodeTreePickerMembers)
+                    {
+                        <p>@item.GetType()</p>
+                        <p>@item.Name</p>
+                        <p>@(item.GetPropertyValue<string>("myProperty"))</p>
+                    }
+                }
+
+                <h2>Multi node tree picker members Ditto</h2>
+                @{
+                    var dittoMultiNodeTreePickerMembers = dittoHomeModel.FeaturedMember;
+
+                    <p>@dittoMultiNodeTreePickerMembers.GetType()</p>
+
+                    foreach (var item in dittoMultiNodeTreePickerMembers)
                     {
                         <p>@item.GetType()</p>
                         <p>@item.Name</p>
@@ -94,9 +153,8 @@
                 }
 
                 <h2>Related Links Ditto</h2>
-                @{
-                    var model = Model.Content.As<Home>();
-                    var relatedLinks = model.RelatedLinks;
+                @{                    
+                    var relatedLinks = dittoHomeModel.RelatedLinks;
                     if (relatedLinks!= null && relatedLinks.Any())
                     {
                         <ul>

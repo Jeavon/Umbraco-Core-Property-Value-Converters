@@ -151,8 +151,7 @@ namespace Our.Umbraco.PropertyConverters.Models
                             return null;
                         }
 
-                        var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-                        this._link = umbHelper.NiceUrl(this._linkItem.Value<int>("internal"));
+                        this._link = UmbracoContext.Current.UrlProvider.GetUrl(this._linkItem.Value<int>("internal"));
                         if (this._link.Equals("#"))
                         {
                             this._linkDeleted = true;

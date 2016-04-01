@@ -52,14 +52,28 @@
             ko.applyBindings(self);
 
             $.validator.addMethod("domain", function (value, element, param) {
+                // beware! encode('test') == 'test-'
+                // read eg https://rt.cpan.org/Public/Bug/Display.html?id=94347
                 value = punycode.encode(value);
-                var re = /^(http[s]?:\/\/)?([-\w]+(\.[-\w]+)*)(:\d+)?(\/[-\w]*)?$/gi;
-                return this.optional(element) || re.test(value);
+                // that regex is best-effort and certainly not exact
+                var re = /^(http[s]?:\/\/)?([-\w]+(\.[-\w]+)*)(:\d+)?(\/[-\w]*|-)?$/gi;
+                var isopt = this.optional(element);
+                var retest = re.test(value);
+                var ret = isopt || retest;
+                return ret;
             }, self._opts.invalidDomain);
 
+            function getDuplicateMessage(val, el) {
+                var other = $(el).nextAll('input').val();
+                var msg = self._opts.duplicateDomain
+                if (other != "" && other != "!!!")
+                    msg = msg + ' (' + other + ')';
+                return msg;
+            }
+
             $.validator.addMethod("duplicate", function (value, element, param) {
-                return $(element).nextAll('input').val() == 0 && !self._isRepeated($(element));
-            }, self._opts.duplicateDomain);
+                return $(element).nextAll('input').val() == "" && !self._isRepeated($(element));
+            }, getDuplicateMessage);
             
             $.validator.addClassRules({
                 domain: { domain: true },
@@ -74,7 +88,7 @@
 
             $('form input.domain').live('focus', function(event) {
                 if (event.type != 'focusin') return;
-                $(this).nextAll('input').val(0);
+                $(this).nextAll('input').val("");
             });
             
             // force validation *now*
@@ -85,7 +99,7 @@
                     return false;
                 
                 var mask = $('#komask');
-                var masked = mask.next();
+                var masked = mask.parent();
                 mask.height(masked.height());
                 mask.width(masked.width());
                 mask.show();
@@ -99,14 +113,14 @@
                     }
                     else {
                         var inputs = $('form input.domain');
-                        inputs.each(function() { $(this).nextAll('input').val(0); });
+                        inputs.each(function() { $(this).nextAll('input').val(""); });
                         for (var i = 0; i < json.Domains.length; i++) {
                             var d = json.Domains[i];
-                            if (d.Duplicate == 1)
+                            if (d.Duplicate)
                                 inputs.each(function() {
                                     var input = $(this);
                                     if (input.val() == d.Name)
-                                        input.nextAll('input').val(1);
+                                        input.nextAll('input').val(d.Other ? d.Other : "!!!");
                                 });
                         }
                         $('form').valid();

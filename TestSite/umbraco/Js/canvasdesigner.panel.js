@@ -77,16 +77,16 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
     $scope.pageUrl = "../dialogs/Preview.aspx?id=" + $location.search().id;
     $scope.valueAreLoaded = false;
     $scope.devices = [
-        { name: "desktop", css: "desktop", icon: "icon-display" },
-        { name: "laptop - 1366px", css: "laptop border", icon: "icon-laptop" },
-        { name: "iPad portrait - 768px", css: "iPad-portrait border", icon: "icon-ipad" },
-        { name: "iPad landscape - 1024px", css: "iPad-landscape border", icon: "icon-ipad flip" },
-        { name: "smartphone portrait - 480px", css: "smartphone-portrait border", icon: "icon-iphone" },
-        { name: "smartphone landscape  - 320px", css: "smartphone-landscape border", icon: "icon-iphone flip" }
+        { name: "desktop", css: "desktop", icon: "icon-display", title: "Desktop" },
+        { name: "laptop - 1366px", css: "laptop border", icon: "icon-laptop", title: "Laptop" },
+        { name: "iPad portrait - 768px", css: "iPad-portrait border", icon: "icon-ipad", title: "Tablet portrait" },
+        { name: "iPad landscape - 1024px", css: "iPad-landscape border", icon: "icon-ipad flip", title: "Tablet landscape" },
+        { name: "smartphone portrait - 480px", css: "smartphone-portrait border", icon: "icon-iphone", title: "Smartphone portrait" },
+        { name: "smartphone landscape  - 320px", css: "smartphone-landscape border", icon: "icon-iphone flip", title: "Smartphone landscape" }
     ];
     $scope.previewDevice = $scope.devices[0];
 
-    var apiController = "/Umbraco/Api/Canvasdesigner/";
+    var apiController = "../Api/Canvasdesigner/";
 
     /*****************************************************************************/
     /* Preview devices */
@@ -95,6 +95,14 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
     // Set preview device
     $scope.updatePreviewDevice = function (device) {
         $scope.previewDevice = device;
+    };
+
+    /*****************************************************************************/
+    /* Exit Preview */
+    /*****************************************************************************/
+
+    $scope.exitPreview = function () {
+        window.top.location.href = "../endPreview.aspx?redir=%2f" + $scope.pageId;
     };
 
     /*****************************************************************************/
@@ -155,6 +163,8 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
 
     // Load parameters from GetLessParameters and init data of the Canvasdesigner config
     $scope.initCanvasdesigner = function () {
+
+        LazyLoad.js(['https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js']);
 
         $http.get(apiController + 'Load', { params: { pageId: $scope.pageId } })
             .success(function (data) {
@@ -242,7 +252,7 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
                         // TODO: special init for font family picker
                         if (item.type == "googlefontpicker" && item.values.fontFamily) {
                             var variant = item.values.fontWeight != "" || item.values.fontStyle != "" ? ":" + item.values.fontWeight + item.values.fontStyle : "";
-                            var gimport = "@import url('http://fonts.googleapis.com/css?family=" + item.values.fontFamily + variant + "');";
+                            var gimport = "@import url('https://fonts.googleapis.com/css?family=" + item.values.fontFamily + variant + "');";
                             if ($.inArray(gimport, parameters) < 0) {
                                 parameters.splice(0, 0, gimport);
                             }
@@ -473,8 +483,9 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
 
     var webFontScriptLoaded = false;
     var loadGoogleFont = function (font) {
+
         if (!webFontScriptLoaded) {
-            $.getScript('http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
+            $.getScript('https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
             .done(function () {
                 webFontScriptLoaded = true;
                 // Recursively call once webfont script is available.
@@ -500,6 +511,7 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
                 }
             });
         }
+
     };
 
     /*****************************************************************************/
@@ -507,9 +519,11 @@ var app = angular.module("Umbraco.canvasdesigner", ['colorpicker', 'ui.slider', 
     /*****************************************************************************/
 
     // Preload of the google font
-    $http.get(apiController + 'GetGoogleFont').success(function (data) {
-        $scope.googleFontFamilies = data;
-    });
+    if ($scope.showStyleEditor) {
+        $http.get(apiController + 'GetGoogleFont').success(function (data) {
+            $scope.googleFontFamilies = data;
+        });
+    }
 
     // watch framLoaded, only if iframe page have enableCanvasdesigner()
     $scope.$watch("enableCanvasdesigner", function () {
@@ -989,6 +1003,30 @@ angular.module("Umbraco.canvasdesigner")
         }
     };
 
+    function loadFont(font, variant) {
+        WebFont.load({
+            google: {
+                families: [font.fontFamily + ":" + variant]
+            },
+            loading: function () {
+                console.log('loading');
+            },
+            active: function () {
+                $scope.selectedFont = font;
+                $scope.selectedFont.fontWeight = googleGetWeight(variant);
+                $scope.selectedFont.fontStyle = googleGetStyle(variant);
+                // If $apply isn't called, the new font family isn't applied until the next user click.
+                $scope.change({
+                    fontFamily: $scope.selectedFont.fontFamily,
+                    fontType: $scope.selectedFont.fontType,
+                    fontWeight: $scope.selectedFont.fontWeight,
+                    fontStyle: $scope.selectedFont.fontStyle,
+                });
+            }
+        });
+    }
+
+    var webFontScriptLoaded = false;
     $scope.showFontPreview = function (font, variant) {
 
         if (!variant)
@@ -999,27 +1037,19 @@ angular.module("Umbraco.canvasdesigner")
             // Font needs to be independently loaded in the iframe for live preview to work.
             document.getElementById("resultFrame").contentWindow.getFont(font.fontFamily + ":" + variant);
 
-            WebFont.load({
-                google: {
-                    families: [font.fontFamily + ":" + variant]
-                },
-                loading: function () {
-                    console.log('loading');
-                },
-                active: function () {
-                    $scope.selectedFont = font;
-                    $scope.selectedFont.fontWeight = googleGetWeight(variant);
-                    $scope.selectedFont.fontStyle = googleGetStyle(variant);
-                    // If $apply isn't called, the new font family isn't applied until the next user click.
-                    $scope.change({
-                        fontFamily: $scope.selectedFont.fontFamily,
-                        fontType: $scope.selectedFont.fontType,
-                        fontWeight: $scope.selectedFont.fontWeight,
-                        fontStyle: $scope.selectedFont.fontStyle,
+            if (!webFontScriptLoaded) {
+                $.getScript('https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js')
+                    .done(function() {
+                        webFontScriptLoaded = true;
+                        loadFont(font, variant);
+                    })
+                    .fail(function() {
+                        console.log('error loading webfont');
                     });
-                }
-            });
-
+            }
+            else {
+                loadFont(font, variant);
+            }
         }
         else {
 

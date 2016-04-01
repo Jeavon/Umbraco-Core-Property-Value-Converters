@@ -13,12 +13,16 @@ namespace TestSite.Logic.PropertyConverters
 {
 	public class MultipleMediaPickerConverter : MultipleMediaPickerPropertyConverter
 	{
+		private readonly string[] _imagePropertyAliases = { "multiMedia", "bannerPicker", "multiMediaSingle" };
+		private readonly string[] _filePropertyAliases = { "multiMediaFile" };
+		private readonly string[] _folderPropertyAliases = { "multiMediaFolder" };
+
 		public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
 		{
 			var publishedContent = base.ConvertSourceToObject(propertyType, source, preview);
 			var isMultiplePicker = IsMultipleDataType(propertyType.DataTypeId);
 
-			if (IsImageProperty(propertyType) )
+			if (IsPropertySpecific(propertyType, _imagePropertyAliases) )
 			{
 				// check if multiple picker and should be converted to a collection of images
 				if (isMultiplePicker)
@@ -30,7 +34,7 @@ namespace TestSite.Logic.PropertyConverters
 				return publishedContent as Image;
 			}
 
-			if (IsFileProperty(propertyType))
+			if (IsPropertySpecific(propertyType, _filePropertyAliases))
 			{
 				// check if multiple picker and should be converted to a collection of files
 				if (isMultiplePicker)
@@ -42,7 +46,7 @@ namespace TestSite.Logic.PropertyConverters
 				return publishedContent as Models.DocumentTypes.File;
 			}
 
-			if (IsFolderProperty(propertyType))
+			if (IsPropertySpecific(propertyType, _folderPropertyAliases))
 			{
 				// check if multiple picker and should be converted to a collection of folders
 				if (isMultiplePicker)
@@ -61,41 +65,25 @@ namespace TestSite.Logic.PropertyConverters
 		{
 			var baseType = base.GetPropertyValueType(propertyType);
 
-			if (IsImageProperty(propertyType))
+			if (IsPropertySpecific(propertyType, _imagePropertyAliases))
 			{
 				return IsMultipleDataType(propertyType.DataTypeId) ? typeof (IEnumerable<Image>) : typeof(Image);
 			}
 
-			if (IsFileProperty(propertyType))
+			if (IsPropertySpecific(propertyType, _filePropertyAliases))
 			{
 				return IsMultipleDataType(propertyType.DataTypeId) ? typeof(IEnumerable<Models.DocumentTypes.File>) : typeof(Models.DocumentTypes.File);
 			}
 
-			if (IsFolderProperty(propertyType))
+			if (IsPropertySpecific(propertyType, _folderPropertyAliases))
 			{
 				return IsMultipleDataType(propertyType.DataTypeId) ? typeof(IEnumerable<Folder>) : typeof(Folder);
 			}
 
 			return baseType;
 		}
-
-		private static bool IsImageProperty(PublishedPropertyType propertyType)
+		private static bool IsPropertySpecific(PublishedPropertyType propertyType, string[] propertyAliases)
 		{
-			var propertyAliases = new[] {"multiMedia", "bannerPicker", "multiMediaSingle" };
-
-			return propertyAliases.InvariantContains(propertyType.PropertyTypeAlias);
-		}
-
-		private static bool IsFileProperty(PublishedPropertyType propertyType)
-		{
-			var propertyAliases = new[] { "multiMediaFile"};
-
-			return propertyAliases.InvariantContains(propertyType.PropertyTypeAlias);
-		}
-		private static bool IsFolderProperty(PublishedPropertyType propertyType)
-		{
-			var propertyAliases = new[] { "multiMediaFolder" };
-
 			return propertyAliases.InvariantContains(propertyType.PropertyTypeAlias);
 		}
 	}

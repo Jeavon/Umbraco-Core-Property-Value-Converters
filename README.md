@@ -1,4 +1,4 @@
-# Umbraco Core Property Value Converters v2#
+# Umbraco Core Property Value Converters v3#
 
 ![](PropertyValueConverters.png)
 
@@ -10,7 +10,7 @@ Umbraco Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-p
 
 Once installed you cannot access the original raw value of the property by using `Model.Content.GetPropertyValue("propertyAlias")` however you can access it by using  `Model.Content.GetProperty("propertyAlias").DataValue.ToString()`
 
-The v2 package for Umbraco v7 currently implements converters for the following built-in Umbraco property editors:
+The v3 package for Umbraco v7.4+ currently implements converters for the following built-in Umbraco property editors:
 
 - [Content Picker](Docs/ContentPicker.md) - returns `IPublishedContent`
 - [Media Picker](Docs/MediaPicker.md) - returns `IPublishedContent`
@@ -22,6 +22,8 @@ These converters work with both the typed IPublishedContent (Model.Content) and 
 
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="typed" />
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="dynamic" />
+
+v3 works brilliantly with the Umbraco ModelsBuilder that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
 
 [Change Log](Docs/ChangeLog.md)
 

@@ -88,9 +88,9 @@ namespace Our.Umbraco.PropertyConverters
 
             if (UmbracoContext.Current != null)
             {
-                var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-                return ConverterHelper.DynamicInvocation() ? umbHelper.Media(source) : umbHelper.TypedMedia(source);
-            }
+				var media = UmbracoContext.Current.MediaCache.GetById((int)source);
+				return ConverterHelper.DynamicInvocation() ? media.AsDynamic() : media;
+			}
 
             return null;
         }
@@ -138,7 +138,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="Type"/>.
         /// </returns>
-        public Type GetPropertyValueType(PublishedPropertyType propertyType)
+        public virtual Type GetPropertyValueType(PublishedPropertyType propertyType)
         {
             return typeof(IPublishedContent);
         }

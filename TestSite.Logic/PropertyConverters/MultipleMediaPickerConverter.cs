@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Our.Umbraco.PropertyConverters;
-using TestSite.Logic.Models.DocumentTypes;
-using Umbraco.Core;
-using Umbraco.Core.Models;
-using Umbraco.Core.Models.PublishedContent;
-
-namespace TestSite.Logic.PropertyConverters
+﻿namespace TestSite.Logic.PropertyConverters
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using Umbraco.Core;
+	using Umbraco.Core.Models;
+	using Umbraco.Core.Models.PublishedContent;
+
+	using Our.Umbraco.PropertyConverters;
+
+	using Models.DocumentTypes;
+
 	public class MultipleMediaPickerConverter : MultipleMediaPickerPropertyConverter
 	{
 		private readonly string[] _imagePropertyAliases = { "multiMedia", "bannerPicker", "multiMediaSingle" };
@@ -27,7 +27,7 @@ namespace TestSite.Logic.PropertyConverters
 				// check if multiple picker and should be converted to a collection of images
 				if (isMultiplePicker)
 				{
-					return ((IEnumerable<IPublishedContent>) publishedContent).Where(t => t.GetType() == typeof(Image)).Select(i => i as Image);
+					return ((IEnumerable<IPublishedContent>) publishedContent).Where(t => t.GetType() == typeof (Image)).Cast<Image>();
 				}
 
 				// return as a image
@@ -39,7 +39,7 @@ namespace TestSite.Logic.PropertyConverters
 				// check if multiple picker and should be converted to a collection of files
 				if (isMultiplePicker)
 				{
-					return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(Models.DocumentTypes.File)).Select(i => i as Models.DocumentTypes.File);
+					return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(Models.DocumentTypes.File)).Cast<Models.DocumentTypes.File>();
 				}
 
 				// return as a file
@@ -51,7 +51,7 @@ namespace TestSite.Logic.PropertyConverters
 				// check if multiple picker and should be converted to a collection of folders
 				if (isMultiplePicker)
 				{
-					return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(Folder)).Select(i => i as Folder);
+					return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(Folder)).Cast<Folder>();
 				}
 
 				// return as a folder
@@ -61,23 +61,27 @@ namespace TestSite.Logic.PropertyConverters
 			// return IPublishedContent
 			return publishedContent;
 		}
+
 		public override Type GetPropertyValueType(PublishedPropertyType propertyType)
 		{
 			var baseType = base.GetPropertyValueType(propertyType);
 
-			if (IsPropertySpecific(propertyType, _imagePropertyAliases))
+			var image = SpecificType(propertyType, _imagePropertyAliases, typeof (IEnumerable<Image>), typeof (Image));
+			if (image != null)
 			{
-				return IsMultipleDataType(propertyType.DataTypeId) ? typeof (IEnumerable<Image>) : typeof(Image);
+				return image;
 			}
 
-			if (IsPropertySpecific(propertyType, _filePropertyAliases))
+			var file = SpecificType(propertyType, _filePropertyAliases, typeof(IEnumerable<Models.DocumentTypes.File>), typeof(Models.DocumentTypes.File));
+			if (file != null)
 			{
-				return IsMultipleDataType(propertyType.DataTypeId) ? typeof(IEnumerable<Models.DocumentTypes.File>) : typeof(Models.DocumentTypes.File);
+				return file;
 			}
 
-			if (IsPropertySpecific(propertyType, _folderPropertyAliases))
+			var folder = SpecificType(propertyType, _filePropertyAliases, typeof(IEnumerable<Folder>), typeof(Folder));
+			if (folder != null)
 			{
-				return IsMultipleDataType(propertyType.DataTypeId) ? typeof(IEnumerable<Folder>) : typeof(Folder);
+				return folder;
 			}
 
 			return baseType;
@@ -85,6 +89,15 @@ namespace TestSite.Logic.PropertyConverters
 		private static bool IsPropertySpecific(PublishedPropertyType propertyType, string[] propertyAliases)
 		{
 			return propertyAliases.InvariantContains(propertyType.PropertyTypeAlias);
+		}
+
+		private Type SpecificType(PublishedPropertyType propertyType, string[] propertyAliases, Type multi, Type single)
+		{
+			if (IsPropertySpecific(propertyType, propertyAliases))
+			{
+				return IsMultipleDataType(propertyType.DataTypeId) ? multi : single;
+			}
+			return null;
 		}
 	}
 }

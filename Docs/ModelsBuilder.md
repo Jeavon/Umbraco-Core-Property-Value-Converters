@@ -4,6 +4,10 @@ The Umbraco Core Property Value Converters package works brilliantly with the Um
 
 However sometimes developers may want specific properties to return a custom strongly typed model, this can be achieved by disabling the default converter and creating a new class inheriting from the base class. Below is a example for the multiple media picker to convert from `IPublishedContent` to the ModelsBuilder generated `Image`, `File` and `Folder` models for specific properties that contain only those types anything else will continue to return `IPublishedContent`.
 
+When using ModelsBuilder ensure to set the value converters to typed in Web.Config
+
+    <add key="Our.Umbraco.CoreValueConverters:Mode" value="typed" />
+
 ## Generated default models with `IPublishedContent` ##
 
 	///<summary>

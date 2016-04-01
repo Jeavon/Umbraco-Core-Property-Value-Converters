@@ -18,6 +18,56 @@
 					}
 				}
 
+
+				<h2>Multiple Media Picker set to multiple</h2>
+				@{
+					var typedMultiMediaPicker = Model.MultiMedia;
+					foreach (var item in typedMultiMediaPicker)
+					{
+						<img src="@item.Url" style="width:200px" />
+						@item.Name @item.GetType()
+
+					}
+				}
+
+				<h2>Multiple Media Picker set to single</h2>
+				@{
+					var typedMediaPickerSingle = Model.MultiMediaSingle;
+					if (typedMediaPickerSingle != null)
+					{
+						<img src="@typedMediaPickerSingle.Url" style="width:200px" />
+						@typedMediaPickerSingle.GetType()
+					}
+				}
+
+				<h2>Multiple Media Picker set to multiple for Files</h2>
+				@{
+					var typedMultiMediaPickerFiles = Model.MultiMediaFile;
+					<ul>
+						@foreach (var item in typedMultiMediaPickerFiles)
+						{
+							<li>
+								<a href="@item.Url" >@item.Url</a> - @item.Name @item.GetType()
+							</li>
+
+						}
+					</ul>
+				}
+
+				<h2>Multiple Media Picker set to multiple for Folders</h2>
+				@{
+					var typedMultiMediaPickerFolders = Model.MultiMediaFolder;
+					<ul>
+						@foreach (var item in typedMultiMediaPickerFolders)
+						{
+							<li>
+								@item.Name - @item.GetType()
+							</li>
+
+						}
+					</ul>
+				}
+
 				@{ Html.RenderPartial("umbFeatures"); }
 			</div>
 		</div>

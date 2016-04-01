@@ -226,6 +226,24 @@ namespace TestSite.Logic.Models.DocumentTypes
 		}
 
 		///<summary>
+		/// Multi Media File
+		///</summary>
+		[ImplementPropertyType("multiMediaFile")]
+		public IEnumerable<TestSite.Logic.Models.DocumentTypes.File> MultiMediaFile
+		{
+			get { return this.GetPropertyValue<IEnumerable<TestSite.Logic.Models.DocumentTypes.File>>("multiMediaFile"); }
+		}
+
+		///<summary>
+		/// Multi Media Folder
+		///</summary>
+		[ImplementPropertyType("multiMediaFolder")]
+		public IEnumerable<TestSite.Logic.Models.DocumentTypes.Folder> MultiMediaFolder
+		{
+			get { return this.GetPropertyValue<IEnumerable<TestSite.Logic.Models.DocumentTypes.Folder>>("multiMediaFolder"); }
+		}
+
+		///<summary>
 		/// Multi Media Single
 		///</summary>
 		[ImplementPropertyType("multiMediaSingle")]

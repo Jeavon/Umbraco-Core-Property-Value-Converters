@@ -203,7 +203,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private static bool IsMultipleDataType(int dataTypeId)
+        public bool IsMultipleDataType(int dataTypeId)
         {
             var dts = ApplicationContext.Current.Services.DataTypeService;
             var multiPickerPreValue =

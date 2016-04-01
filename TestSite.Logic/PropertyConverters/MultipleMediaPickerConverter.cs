@@ -78,7 +78,7 @@
 				return file;
 			}
 
-			var folder = SpecificType(propertyType, _filePropertyAliases, typeof(IEnumerable<Folder>), typeof(Folder));
+			var folder = SpecificType(propertyType, _folderPropertyAliases, typeof(IEnumerable<Folder>), typeof(Folder));
 			if (folder != null)
 			{
 				return folder;

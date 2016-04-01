@@ -101,9 +101,8 @@ namespace Our.Umbraco.PropertyConverters
             {
                 if (!(propertyType.PropertyTypeAlias != null && PropertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
                 {
-                    var umbHelper = new UmbracoHelper(UmbracoContext.Current);
-
-                    return ConverterHelper.DynamicInvocation() ? umbHelper.Content(source) : umbHelper.TypedContent(source);
+                    var content = UmbracoContext.Current.ContentCache.GetById((int)source);
+                    return ConverterHelper.DynamicInvocation() ? content.AsDynamic() : content;
                 }
             }
 

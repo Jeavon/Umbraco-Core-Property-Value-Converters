@@ -1,0 +1,31 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<TestSite.Logic.Models.DocumentTypes.UmbHomePage>
+@{
+	Layout = "umbLayout.cshtml";
+}
+@{ Html.RenderPartial("umbHomepageBanner"); }
+<!-- Main -->
+<div id="main-wrapper">
+	<div id="main" class="container">
+		<div class="row">
+			<div class="12u">
+				<h2>Content picker</h2>
+				@{
+					var typedContentPicker = Model.ContentPicker;
+					if (typedContentPicker != null)
+					{
+						<p>@typedContentPicker.GetType()</p>
+						<p>@typedContentPicker.Name</p>
+					}
+				}
+
+				@{ Html.RenderPartial("umbFeatures"); }
+			</div>
+		</div>
+		<div class="row">
+			<div class="12u">
+				@{   Html.RenderPartial("umbNewsOverviewWidget"); }
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Main -->

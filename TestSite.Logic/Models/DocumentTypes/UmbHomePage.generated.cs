@@ -220,18 +220,18 @@ namespace TestSite.Logic.Models.DocumentTypes
 		/// Multi Media
 		///</summary>
 		[ImplementPropertyType("multiMedia")]
-		public IEnumerable<IPublishedContent> MultiMedia
+		public IEnumerable<TestSite.Logic.Models.DocumentTypes.Image> MultiMedia
 		{
-			get { return this.GetPropertyValue<IEnumerable<IPublishedContent>>("multiMedia"); }
+			get { return this.GetPropertyValue<IEnumerable<TestSite.Logic.Models.DocumentTypes.Image>>("multiMedia"); }
 		}
 
 		///<summary>
 		/// Multi Media Single
 		///</summary>
 		[ImplementPropertyType("multiMediaSingle")]
-		public IPublishedContent MultiMediaSingle
+		public TestSite.Logic.Models.DocumentTypes.Image MultiMediaSingle
 		{
-			get { return this.GetPropertyValue<IPublishedContent>("multiMediaSingle"); }
+			get { return this.GetPropertyValue<TestSite.Logic.Models.DocumentTypes.Image>("multiMediaSingle"); }
 		}
 
 		///<summary>

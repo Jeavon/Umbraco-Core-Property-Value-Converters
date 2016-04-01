@@ -189,7 +189,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="Type"/>.
         /// </returns>
-        public Type GetPropertyValueType(PublishedPropertyType propertyType)
+        public virtual Type GetPropertyValueType(PublishedPropertyType propertyType)
         {
             return IsMultipleDataType(propertyType.DataTypeId) ? typeof(IEnumerable<IPublishedContent>) : typeof(IPublishedContent);
         }

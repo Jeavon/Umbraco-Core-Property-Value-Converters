@@ -1,6 +1,7 @@
 {
 	"label": "Label",
 	"alias": "Alias",
+	"addFieldset": "Add an item",
 	"hideFieldsetControls": "Hide Fieldset Controls?",
 	"hideFieldsetControlsDescription": "Hides the fieldset add/remove/sort controls.",
 	"toggleAdvanced": "Toggle Advanced Options",
@@ -35,5 +36,13 @@
 	"enableDisabling": "Enable Fieldset Disabling?",
 	"enableDisablingDescription": "Allows fieldsets to be individually enabled/disabled.",
 	"deepDatatypeRequest":"Enable Deep Datatype Requests?",
-	"deepDatatypeRequestDescription":"Allows for easier datatype interception at the cost of caching performance."
+	"deepDatatypeRequestDescription":"Allows for easier datatype interception at the cost of caching performance.",
+    "overrideDefaultConverterDescription":"Check this if you wish to use your own custom property value converter.",
+    "overrideDefaultConverter":"Override Default Property Value Converter?",
+    "enableCloning":"Enable Cloning?",
+ 	"enableCloningDescription":"Enable Fieldset Cloning.",
+  "fieldsetGroups":"Fieldset groups",
+  "fieldsetGroupsDescription":"If you have a lot of fieldsets to choose from, you may want to consider grouping them in the fieldset picker. Once you have created your groups here, a group picker will be displayed in the fieldset editor and you can assign your fieldsets to their respective groups.",
+  "fieldsetGroupName":"Name",
+  "addFieldsetGroup":"Add group"
 }

@@ -57,8 +57,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Archetype">
-      <HintPath>..\packages\Archetype.1.5.0-beta\lib\net40\Archetype.dll</HintPath>
+    <Reference Include="Archetype, Version=1.12.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archetype.Binaries.1.12.3\lib\net40\Archetype.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.dll</HintPath>
@@ -276,6 +277,10 @@
       <HintPath>..\packages\Umbraco.ModelsBuilder.3.0.2\lib\Umbraco.ModelsBuilder.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Umbraco.ModelsBuilder.Api, Version=3.0.2.93, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Umbraco.ModelsBuilder.Api.3.0.2\lib\Umbraco.ModelsBuilder.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="umbraco.providers, Version=1.0.5921.28480, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\UmbracoCms.Core.7.4.2\lib\umbraco.providers.dll</HintPath>
       <Private>True</Private>
@@ -294,13 +299,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\Archetype\assets\logo_50.png" />
+    <Content Include="App_Plugins\Archetype\assets\twitter.png" />
     <Content Include="App_Plugins\Archetype\css\archetype.css" />
     <Content Include="App_Plugins\Archetype\js\archetype.js" />
     <Content Include="App_Plugins\Archetype\langs\da-dk.js" />
+    <Content Include="App_Plugins\Archetype\langs\da.js" />
     <Content Include="App_Plugins\Archetype\langs\de-de.js" />
+    <Content Include="App_Plugins\Archetype\langs\de.js" />
     <Content Include="App_Plugins\Archetype\langs\en-gb.js" />
     <Content Include="App_Plugins\Archetype\langs\en-us.js" />
+    <Content Include="App_Plugins\Archetype\langs\en.js" />
     <Content Include="App_Plugins\Archetype\langs\es-es.js" />
+    <Content Include="App_Plugins\Archetype\langs\es.js" />
     <Content Include="App_Plugins\Archetype\langs\fr-fr.js" />
     <Content Include="App_Plugins\Archetype\langs\he-il.js" />
     <Content Include="App_Plugins\Archetype\langs\it-it.js" />
@@ -313,7 +324,10 @@
     <Content Include="App_Plugins\Archetype\langs\ru-ru.js" />
     <Content Include="App_Plugins\Archetype\langs\sv-se.js" />
     <Content Include="App_Plugins\Archetype\langs\zh-cn.js" />
+    <Content Include="App_Plugins\Archetype\views\archetype.config.developer.dialog.html" />
+    <Content Include="App_Plugins\Archetype\views\archetype.config.fieldset.dialog.html" />
     <Content Include="App_Plugins\Archetype\views\archetype.config.html" />
+    <Content Include="App_Plugins\Archetype\views\archetype.config.stylescript.dialog.html" />
     <Content Include="App_Plugins\Archetype\views\archetype.default.html" />
     <Content Include="App_Plugins\Archetype\views\archetype.html" />
     <Content Include="App_Plugins\dummy.txt" />

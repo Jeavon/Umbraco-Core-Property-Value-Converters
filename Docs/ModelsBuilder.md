@@ -52,7 +52,7 @@ However sometimes developers may want specific properties to return a custom str
     
 ## Step 2: Create a custom converter that inherits from MultipleMediaPickerPropertyConverter ##
 
-We need to override two methods, `ConvertSourceToObject` and `GetPropertyValueType`
+We need to override two methods, `ConvertSourceToObject` and `GetPropertyValueType` and specify the property aliases that we want to convert to `Image`, `File` or `Folder`
     
     namespace TestSite.Logic.PropertyConverters
     {
@@ -158,7 +158,7 @@ We need to override two methods, `ConvertSourceToObject` and `GetPropertyValueTy
     	}
     }
 
-## Generated default models with `Image`, `File` & `Folder` ##
+## Generated custom models with `Image`, `File` & `Folder` ##
 
 		///<summary>
 		/// Multi Media

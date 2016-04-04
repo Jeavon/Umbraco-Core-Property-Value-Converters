@@ -23,7 +23,7 @@ These converters work with both the typed IPublishedContent (Model.Content) and 
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="typed" />
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="dynamic" />
 
-v3 works brilliantly with the Umbraco ModelsBuilder that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
+v3 works brilliantly with the **Umbraco ModelsBuilder** that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
 
 [Change Log](Docs/ChangeLog.md)
 

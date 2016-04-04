@@ -2,13 +2,137 @@
 
 The Umbraco Core Property Value Converters package works brilliantly with the Umbraco Model builder out of the box by converting the pickers into strongly typed `IPublishedContent`. 
 
-However sometimes developers may want specific properties to return a custom strongly typed model, this can be achieved by disabling the default converter and creating a new class inheriting from the base class. Below is a example for the multiple media picker to convert from `IPublishedContent` to the ModelsBuilder generated `Image`, `File` and `Folder` models for specific properties that contain only those types anything else will continue to return `IPublishedContent`.
+However sometimes developers may want specific properties to return a custom strongly typed model, this can be achieved by disabling the default converter and creating a new class inheriting from the base class. 
 
 When using ModelsBuilder ensure to set the value converters to typed in Web.Config
 
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="typed" />
 
-## Generated default models with `IPublishedContent` ##
+## Example 1 - Multi Node Tree Picker ##
+
+In this example we have two mulitnode tree pickers that instead of a collection of `IPublishedContent` we would like to return collections of our custom models of `PageTile` & `NewsArticlePage`, for all other multi node tree pickers we want them to continue to return `IPublishedContent`
+
+### Generated default models with `IPublishedContent` ###
+
+		///<summary>
+		/// Page Tiles
+		///</summary>
+		[ImplementPropertyType("pageTiles")]
+		public IEnumerable<IPublishedContent> PageTiles
+		{
+			get { return this.GetPropertyValue<IEnumerable<IPublishedContent>>("pageTiles"); }
+		}
+
+		///<summary>
+		/// Featured News Articles
+		///</summary>
+		[ImplementPropertyType("featuredNewsArticles")]
+		public IEnumerable<IPublishedContent> FeaturedNewsArticles
+		{
+			get { return this.GetPropertyValue<IEnumerable<IPublishedContent>>("featuredNewsArticles"); }
+		}
+
+### Step 1: Disable default converter ###
+
+    namespace TestSite.Logic.Events
+    {
+    	using Umbraco.Core;
+    	using Umbraco.Core.PropertyEditors;
+    
+    	using Our.Umbraco.PropertyConverters;
+    	public class RemoveDefaultConverters : ApplicationEventHandler
+    	{
+    		protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+    		{
+    			PropertyValueConvertersResolver.Current.RemoveType<MultiNodeTreePickerPropertyConverter>();
+    		}
+    	}
+    }
+
+### Step 2: Create a custom converter that inherits from MultiNodeTreePickerPropertyConverter ###
+
+    namespace TestSite.Logic.PropertyConverters
+    {
+    	using System;
+    	using System.Collections.Generic;
+    	using System.Linq;
+    
+    	using Umbraco.Core;
+    	using Umbraco.Core.Models;
+    	using Umbraco.Core.Models.PublishedContent;
+    
+    	using Our.Umbraco.PropertyConverters;
+    
+    	using Models.DocumentTypes;
+    	public class MultiNodeTreePickerConverter : MultiNodeTreePickerPropertyConverter
+    	{
+    		private readonly string[] _pageTilePropertyAliases = { "pageTiles" };
+    		private readonly string[] _featuredNewsArticlesPropertyAliases = { "featuredNewsArticles" };
+    
+    		public override Type GetPropertyValueType(PublishedPropertyType propertyType)
+    		{
+    			if (IsPropertySpecific(propertyType, _pageTilePropertyAliases))
+    			{
+    				return typeof (IEnumerable<PageTile>);
+    			}
+    
+    			if (IsPropertySpecific(propertyType, _featuredNewsArticlesPropertyAliases))
+    			{
+    				return typeof(IEnumerable<NewsArticlePage>);
+    			}
+    
+    			return base.GetPropertyValueType(propertyType);
+    		}
+    
+    		public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
+    		{
+    			var publishedContent = base.ConvertSourceToObject(propertyType, source, preview);
+    
+    			if (IsPropertySpecific(propertyType, _pageTilePropertyAliases))
+    			{
+    				return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(PageTile)).Cast<PageTile>();
+    			}
+    
+    			if (IsPropertySpecific(propertyType, _featuredNewsArticlesPropertyAliases))
+    			{
+    				return ((IEnumerable<IPublishedContent>)publishedContent).Where(t => t.GetType() == typeof(NewsArticlePage)).Cast<NewsArticlePage>();
+    			}
+    
+    			return publishedContent;
+    
+    		}
+    		private static bool IsPropertySpecific(PublishedPropertyType propertyType, string[] propertyAliases)
+    		{
+    			return propertyAliases.InvariantContains(propertyType.PropertyTypeAlias);
+    		}
+    	}
+    }
+    
+### Generated custom models with `PageTile` & `NewsArticlePage` ###
+
+		///<summary>
+		/// Page Tiles
+		///</summary>
+		[ImplementPropertyType("pageTiles")]
+		public IEnumerable<TestSite.Logic.Models.DocumentTypes.PageTile> PageTiles
+		{
+			get { return this.GetPropertyValue<IEnumerable<TestSite.Logic.Models.DocumentTypes.PageTile>>("pageTiles"); }
+		}
+
+		///<summary>
+		/// Featured News Articles
+		///</summary>
+		[ImplementPropertyType("featuredNewsArticles")]
+		public IEnumerable<TestSite.Logic.Models.DocumentTypes.NewsArticlePage> FeaturedNewsArticles
+		{
+			get { return this.GetPropertyValue<IEnumerable<TestSite.Logic.Models.DocumentTypes.NewsArticlePage>>("featuredNewsArticles"); }
+		}
+
+## Example 2 (advanced) - Multi Media Picker ##
+
+Below is a example for the multiple media picker to convert from `IPublishedContent` to the ModelsBuilder generated `Image`, `File` and `Folder` models for specific properties that contain only those types anything else will continue to return `IPublishedContent`.
+
+### Generated default models with `IPublishedContent` ###
 
 	///<summary>
 	/// Multi Media
@@ -37,7 +161,7 @@ When using ModelsBuilder ensure to set the value converters to typed in Web.Conf
 		get { return this.GetPropertyValue<IEnumerable<IPublishedContent>>("multiMediaFolder"); }
 	}
 
-## Step 1: Disable default converter ##
+### Step 1: Disable default converter ###
 
     namespace TestSite.Logic.Events
     {
@@ -54,7 +178,7 @@ When using ModelsBuilder ensure to set the value converters to typed in Web.Conf
     	}
     }
     
-## Step 2: Create a custom converter that inherits from MultipleMediaPickerPropertyConverter ##
+### Step 2: Create a custom converter that inherits from MultipleMediaPickerPropertyConverter ###
 
 We need to override two methods, `ConvertSourceToObject` and `GetPropertyValueType` and specify the property aliases that we want to convert to `Image`, `File` or `Folder`
     
@@ -162,7 +286,7 @@ We need to override two methods, `ConvertSourceToObject` and `GetPropertyValueTy
     	}
     }
 
-## Generated custom models with `Image`, `File` & `Folder` ##
+### Generated custom models with `Image`, `File` & `Folder` ###
 
 		///<summary>
 		/// Multi Media

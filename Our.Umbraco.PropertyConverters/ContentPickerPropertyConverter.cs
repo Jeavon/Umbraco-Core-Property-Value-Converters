@@ -24,7 +24,7 @@ namespace Our.Umbraco.PropertyConverters
     /// <summary>
     /// The content picker property value converter.
     /// </summary>
-    public class ContentPickerPropertyConverter : IPropertyValueConverterMeta
+    public class ContentPickerPropertyConverter : PropertyValueConverterBase, IPropertyValueConverterMeta
     {
         /// <summary>
         /// The properties to exclude.
@@ -44,7 +44,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public bool IsConverter(PublishedPropertyType propertyType)
+        public override bool IsConverter(PublishedPropertyType propertyType)
         {
             return propertyType.PropertyEditorAlias.Equals(Constants.PropertyEditors.ContentPickerAlias);
         }
@@ -64,7 +64,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
         {
             var attemptConvertInt = source.TryConvertTo<int>();
             if (attemptConvertInt.Success)
@@ -90,7 +90,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToObject(PublishedPropertyType propertyType, object source, bool preview)
         {
             if (source == null)
             {
@@ -124,7 +124,7 @@ namespace Our.Umbraco.PropertyConverters
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public object ConvertSourceToXPath(PublishedPropertyType propertyType, object source, bool preview)
+        public override object ConvertSourceToXPath(PublishedPropertyType propertyType, object source, bool preview)
         {
             return source.ToString();
         }

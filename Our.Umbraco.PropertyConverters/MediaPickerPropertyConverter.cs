@@ -88,9 +88,9 @@ namespace Our.Umbraco.PropertyConverters
 
             if (UmbracoContext.Current != null)
             {
-				var media = UmbracoContext.Current.MediaCache.GetById((int)source);
-				return ConverterHelper.DynamicInvocation() ? media.AsDynamic() : media;
-			}
+                var media = UmbracoContext.Current.MediaCache.GetById((int)source);
+                return ConverterHelper.DynamicInvocation() ? media.AsDynamic() : media;
+            }
 
             return null;
         }

@@ -172,6 +172,19 @@ namespace Our.Umbraco.PropertyConverters.Models
             }
         }
 
+        public int? Id
+        {
+            get
+            {
+                if (this.IsInternal)
+                {
+                    return this._linkItem.Value<int>("internal");
+                }
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether deleted.
         /// </summary>

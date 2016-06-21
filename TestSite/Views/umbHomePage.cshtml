@@ -174,7 +174,10 @@
                             @foreach (var item in typedRelatedLinksConverted)
                             {
                                 var linkTarget = (item.NewWindow) ? "_blank" : null;
-                                <li><a href="@item.Link" target="@linkTarget">@item.Caption</a></li>
+
+                                var itemId = item.Id != null ? string.Format("(Id: {0}) - ", item.Id) : null;
+
+                                <li>@itemId<a href="@item.Link" target="@linkTarget">@item.Caption</a></li>
                             }
                         </ul>
                     }

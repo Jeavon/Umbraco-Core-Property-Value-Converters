@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
 
-	<!-- IMPORTS -->
-	<PropertyGroup>
-		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
-		<MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
+  <!-- IMPORTS -->
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+    <MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
     <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
     <AppVeyorUmbracoPath>$(MSBuildProjectDirectory)\Tools\AppVeyorUmbraco</AppVeyorUmbracoPath>
-	</PropertyGroup>
+  </PropertyGroup>
 
-	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
-	<Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
   <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
   <Import Project="$(AppVeyorUmbracoPath)\AppVeyorUmbraco.Targets" />
 
@@ -30,6 +30,7 @@
   <!-- NUGET ONLY PROPERTIES -->
   <PropertyGroup>
     <PackageId>Our.Umbraco.CoreValueConverters</PackageId>
+    <UmbracoVersion>[7.4.2,7.6.0]</UmbracoVersion>
     <Copyright>The Umbraco Community</Copyright>
     <Owners>The Umbraco Community</Owners>
     <IconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</IconUrl>
@@ -105,18 +106,18 @@
     <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyInformationalVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyInformationalVersion(&quot;$(ProductVersion)&quot;)]" />
   </Target>
 
-	<!-- COMPILE -->
-	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
-		<MSBuild Projects="$(CoreProjectDir)\Our.Umbraco.PropertyConverters.csproj" Properties="Configuration=$(BuildConfig)"/>
-	</Target>
+  <!-- COMPILE -->
+  <Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
+    <MSBuild Projects="$(CoreProjectDir)\Our.Umbraco.PropertyConverters.csproj" Properties="Configuration=$(BuildConfig)"/>
+  </Target>
 
-	<!-- PREPARE FILES -->
-	<Target Name="PrepareFiles" DependsOnTargets="Compile">
-		<ItemGroup>
-			<BinFiles Include="$(CoreProjectDir)\Bin\$(BuildConfig)\Our.Umbraco.PropertyEditorConverters.dll" />
+  <!-- PREPARE FILES -->
+  <Target Name="PrepareFiles" DependsOnTargets="Compile">
+    <ItemGroup>
+      <BinFiles Include="$(CoreProjectDir)\Bin\$(BuildConfig)\Our.Umbraco.PropertyEditorConverters.dll" />
       <PdbFiles Include="$(CoreProjectDir)\Bin\$(BuildConfig)\Our.Umbraco.PropertyEditorConverters.pdb" />
       <SrcFiles Include="$(CoreProjectDir)\**\*.cs" Exclude="$(CoreProjectDir)\obj\**"/>
-			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
+      <PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
       <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
       <ViewsConfigInstallXdt Include ="$(MSBuildProjectDirectory)\views.web.config.install.xdt"/>
       <ViewsConfigUninstallXdt Include ="$(MSBuildProjectDirectory)\views.web.config.uninstall.xdt"/>
@@ -138,18 +139,19 @@
       <ManifestFiles Include="$(BuildUmbDir)\**\*" Exclude="$(BuildUmbDir)\package.xml" />
     </ItemGroup>
     <ManifestUpdate
-			ManifestFile="$(BuildUmbDir)\package.xml"
-			WorkingDirectory="$(BuildUmbDir)"
-			MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
-			PackageName="$(PackageName)"
-			PackageVersion="$(ProductVersion)"
-			AuthorName="$(AuthorName)"
-			AuthorUrl="$(AuthorUrl)"
-			Readme="$(Readme)"
-			PackageLicenseName="$(PackageLicenseName)"
-			PackageLicenseUrl="$(PackageLicenseUrl)"
-			PackageUrl="$(ProjectUrl)"
-			Files="@(ManifestFiles)" />
+      ManifestFile="$(BuildUmbDir)\package.xml"
+      WorkingDirectory="$(BuildUmbDir)"
+      MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
+      PackageName="$(PackageName)"
+      PackageVersion="$(ProductVersion)"
+      AuthorName="$(AuthorName)"
+      AuthorUrl="$(AuthorUrl)"
+      Readme="$(Readme)"
+      PackageLicenseName="$(PackageLicenseName)"
+      PackageLicenseUrl="$(PackageLicenseUrl)"
+      PackageUrl="$(ProjectUrl)"
+      Files="@(ManifestFiles)"
+      IconUrl="$(IconUrl)"/>
   </Target>
 
   <!-- MANIFEST FOR NUGET PACKAGE -->
@@ -158,24 +160,24 @@
       <ManifestFiles Include="$(BuildNuGetDir)\**\*" Exclude="$(BuildNuGetDir)\package.nuspec" />
     </ItemGroup>
     <MSBuild.NuGet.Tasks.ManifestUpdate
-			ManifestFile="$(BuildNuGetDir)\package.nuspec"
-			WorkingDirectory="$(BuildNuGetDir)"
-			Title="$(PackageName)"
-			Description="$(Readme)"
-			Summary="$(Summary)"
-			Version="$(ProductVersion)"
-			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
-			Authors="$(AuthorName)"
-			Owners="$(Owners)"
-			Copyright="$(Copyright)"
-			LicenseUrl="$(PackageLicenseUrl)"
-			ProjectUrl="$(ProjectUrl)"
-			Id="$(PackageId)"
-			IconUrl="$(IconUrl)"
-			Language="$(Language)"
-			RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
-			Tags="$(Tags)"
-			Files="@(ManifestFiles)" />
+      ManifestFile="$(BuildNuGetDir)\package.nuspec"
+      WorkingDirectory="$(BuildNuGetDir)"
+      Title="$(PackageName)"
+      Description="$(Readme)"
+      Summary="$(Summary)"
+      Version="$(ProductVersion)"
+      MinimumRequiredUmbracoVersion ="$(UmbracoVersion)"
+      Authors="$(AuthorName)"
+      Owners="$(Owners)"
+      Copyright="$(Copyright)"
+      LicenseUrl="$(PackageLicenseUrl)"
+      ProjectUrl="$(ProjectUrl)"
+      Id="$(PackageId)"
+      IconUrl="$(IconUrl)"
+      Language="$(Language)"
+      RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+      Tags="$(Tags)"
+      Files="@(ManifestFiles)" />
   </Target>
 
   <!-- PACKAGE -->
@@ -185,9 +187,9 @@
     </ItemGroup>
 
     <Package ManifestFile="$(BuildUmbDir)\package.xml"
-			WorkingDirectory="$(BuildUmbDir)"
-			OutputDirectory="$(ArtifactsDir)"
-			Files="@(PackageFiles)" />
+      WorkingDirectory="$(BuildUmbDir)"
+      OutputDirectory="$(ArtifactsDir)"
+      Files="@(PackageFiles)" />
 
     <MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\BuildPackage\Tools\NuGet.exe"
           ManifestFile="$(BuildNuGetDir)\package.nuspec"

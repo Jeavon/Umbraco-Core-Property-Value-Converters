@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
+
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
@@ -29,6 +31,15 @@ namespace Our.Umbraco.PropertyConverters
     /// </summary>
     public class MultiNodeTreePickerPropertyConverter : PropertyValueConverterBase, IPropertyValueConverterMeta
     {
+        /// <summary>
+        /// The properties to exclude.
+        /// </summary>
+        private static readonly List<string> PropertiesToExclude = new List<string>()
+        {
+            Constants.Conventions.Content.InternalRedirectId.ToLower(CultureInfo.InvariantCulture),
+            Constants.Conventions.Content.Redirect.ToLower(CultureInfo.InvariantCulture)
+        };
+
         /// <summary>
         /// Checks if this converter can convert the property editor and registers if it can.
         /// </summary>
@@ -102,38 +113,46 @@ namespace Our.Umbraco.PropertyConverters
                 return null;
             }
 
-            var nodeIds = (int[])source;
-
-            var multiNodeTreePicker = new List<IPublishedContent>();
-
-            var dynamicInvocation = ConverterHelper.DynamicInvocation();
 
             if (UmbracoContext.Current != null)
             {
-                var umbHelper = new UmbracoHelper(UmbracoContext.Current);
+                var nodeIds = (int[])source;
 
-                if (nodeIds.Length > 0)
+                if (!(propertyType.PropertyTypeAlias != null && PropertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
                 {
 
-                    var objectType = UmbracoObjectTypes.Unknown;
+                    var multiNodeTreePicker = new List<IPublishedContent>();
 
-                    foreach (var nodeId in nodeIds)
+                    var dynamicInvocation = ConverterHelper.DynamicInvocation();
+                    
+                    var umbHelper = new UmbracoHelper(UmbracoContext.Current);
+
+                    if (nodeIds.Length > 0)
                     {
-                        var multiNodeTreePickerItem = GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Document, umbHelper.TypedContent)
-                                    ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Media, umbHelper.TypedMedia)
-                                    ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Member, umbHelper.TypedMember);
 
-                        if (multiNodeTreePickerItem != null)
+                        var objectType = UmbracoObjectTypes.Unknown;
+
+                        foreach (var nodeId in nodeIds)
                         {
-                            multiNodeTreePicker.Add(dynamicInvocation ? multiNodeTreePickerItem.AsDynamic() : multiNodeTreePickerItem);
+                            var multiNodeTreePickerItem = GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Document, umbHelper.TypedContent)
+                                        ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Media, umbHelper.TypedMedia)
+                                        ?? GetPublishedContent(nodeId, ref objectType, UmbracoObjectTypes.Member, umbHelper.TypedMember);
+
+                            if (multiNodeTreePickerItem != null)
+                            {
+                                multiNodeTreePicker.Add(dynamicInvocation ? multiNodeTreePickerItem.AsDynamic() : multiNodeTreePickerItem);
+                            }
                         }
+
                     }
 
+                    return dynamicInvocation
+                                ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
+                                : multiNodeTreePicker.Yield().Where(x => x != null);
                 }
-
-                return dynamicInvocation
-                           ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
-                           : multiNodeTreePicker.Yield().Where(x => x != null);
+                
+                // return the first nodeId
+                return nodeIds.FirstOrDefault();
             }
             else
             {

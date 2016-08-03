@@ -6,25 +6,20 @@
 //   The multi node tree picker property editor value converter.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.Globalization;
-
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-
-    using global::Umbraco.Web.Models;
-
-    using Our.Umbraco.PropertyConverters.Utilities;
+    using System.Globalization;
 
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
+
+    using Our.Umbraco.PropertyConverters.Utilities;
 
     /// <summary>
     /// The multi node tree picker property editor value converter.
@@ -113,14 +108,12 @@ namespace Our.Umbraco.PropertyConverters
                 return null;
             }
 
-
             if (UmbracoContext.Current != null)
             {
                 var nodeIds = (int[])source;
 
-                if (!(propertyType.PropertyTypeAlias != null && PropertiesToExclude.Contains(propertyType.PropertyTypeAlias.ToLower(CultureInfo.InvariantCulture))))
+                if (!(propertyType.PropertyTypeAlias != null && PropertiesToExclude.InvariantContains(propertyType.PropertyTypeAlias)))
                 {
-
                     var multiNodeTreePicker = new List<IPublishedContent>();
 
                     var dynamicInvocation = ConverterHelper.DynamicInvocation();
@@ -129,7 +122,6 @@ namespace Our.Umbraco.PropertyConverters
 
                     if (nodeIds.Length > 0)
                     {
-
                         var objectType = UmbracoObjectTypes.Unknown;
 
                         foreach (var nodeId in nodeIds)
@@ -143,15 +135,10 @@ namespace Our.Umbraco.PropertyConverters
                                 multiNodeTreePicker.Add(dynamicInvocation ? multiNodeTreePickerItem.AsDynamic() : multiNodeTreePickerItem);
                             }
                         }
-
                     }
-
-                    return dynamicInvocation
-                                ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
-                                : multiNodeTreePicker.Yield().Where(x => x != null);
                 }
                 
-                // return the first nodeId
+                // return the first nodeId as this is one of the excluded properties that expects a single id
                 return nodeIds.FirstOrDefault();
             }
             else

@@ -22,6 +22,6 @@ namespace Our.Umbraco.PropertyConverters.Models
         /// <summary>
         /// External link type
         /// </summary>
-        External      
+        External
     }
 }

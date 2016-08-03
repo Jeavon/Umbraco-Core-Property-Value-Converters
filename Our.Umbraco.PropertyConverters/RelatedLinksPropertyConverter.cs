@@ -6,15 +6,19 @@
 //   Defines the RelatedLinksPropertyConverter type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Our.Umbraco.PropertyConverters
 {
-    using Our.Umbraco.PropertyConverters.Models;
+    using System.Collections.Generic;
 
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
     using global::Umbraco.Web;
+    using global::Umbraco.Core.Logging;
+
+    using Newtonsoft.Json;
+
+    using Our.Umbraco.PropertyConverters.Models;
 
     /// <summary>
     /// The related links property value converter.
@@ -61,7 +65,58 @@ namespace Our.Umbraco.PropertyConverters
 
             var sourceString = source.ToString();
 
-            return UmbracoContext.Current != null ? new RelatedLinks(sourceString) : null;
+            var relatedLinksData = JsonConvert.DeserializeObject<IEnumerable<RelatedLinkData>>(sourceString);
+            var relatedLinks = new List<RelatedLink>();
+
+            foreach (var linkData in relatedLinksData)
+            {
+                var relatedLink = new RelatedLink()
+                {
+                    Caption = linkData.Caption,
+                    NewWindow = linkData.NewWindow,
+                    IsInternal = linkData.IsInternal,
+                    Type = linkData.Type,
+                    Id = linkData.Internal,
+                    Link = linkData.Link
+                };
+                relatedLink = CreateLink(relatedLink);
+
+                if (!relatedLink.IsDeleted)
+                {
+                    relatedLinks.Add(relatedLink);
+                }
+                else
+                {
+                    LogHelper.Warn<RelatedLinks>(
+                        $"Related Links value converter skipped a link as the node has been unpublished/deleted (Internal Link NodeId: {relatedLink.Link}, Link Caption: \"{relatedLink.Caption}\")");
+                }
+            }
+
+            return new RelatedLinks(relatedLinks);
+        }
+
+        private RelatedLink CreateLink(RelatedLink link)
+        {
+            if (link.IsInternal && link.Id != null)
+            {
+                if (UmbracoContext.Current == null)
+                {
+                    return null;
+                }
+
+                link.Link = UmbracoContext.Current.UrlProvider.GetUrl((int)link.Id);
+                if (link.Link.Equals("#"))
+                {
+                    link.IsDeleted = true;
+                    link.Link = link.Id.ToString();
+                }
+                else
+                {
+                    link.IsDeleted = false;
+                }
+            }
+
+            return link;
         }
     }
 }

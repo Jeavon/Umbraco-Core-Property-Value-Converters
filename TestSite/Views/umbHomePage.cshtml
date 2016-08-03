@@ -4,7 +4,7 @@
 @using Umbraco.Web.Models
 @inherits UmbracoTemplatePage
 @{
-    Layout = "umbLayout.cshtml"; 
+    Layout = "umbLayout.cshtml";
     var dittoHomeModel = Model.Content.As<Home>();
     }
 @{ Html.RenderPartial("umbHomepageBanner"); }
@@ -150,7 +150,7 @@
                 }
 
                 <h2>Related Links Ditto</h2>
-                @{                    
+                @{
                     var relatedLinks = dittoHomeModel.RelatedLinks;
                     if (relatedLinks!= null && relatedLinks.Any())
                     {
@@ -165,6 +165,9 @@
                 }
 
                 <h2>Related Links</h2>
+                <pre>
+                    @Model.Content.GetProperty("relatedLinks").DataValue
+                </pre>
                 @{
                     var typedRelatedLinksConverted = Model.Content.GetPropertyValue<RelatedLinks>("relatedLinks");
 

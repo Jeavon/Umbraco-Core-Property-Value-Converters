@@ -254,11 +254,12 @@
   <ItemGroup>
     <Compile Include="Install\ConfigNameSpaceModifier.cs" />
     <Compile Include="Install\UmbracoEvents.cs" />
+    <Compile Include="Models\RelatedLink.cs" />
+    <Compile Include="Models\RelatedLinkData.cs" />
     <Compile Include="Models\RelatedLinks.cs" />
     <Compile Include="Models\RelatedLinkType.cs" />
     <Compile Include="RelatedLinksPropertyConverter.cs" />
     <Compile Include="ContentPickerPropertyConverter.cs" />
-    <Compile Include="Models\RelatedLink.cs" />
     <Compile Include="MultipleMediaPickerPropertyConverter.cs" />
     <Compile Include="MediaPickerPropertyConverter.cs" />
     <Compile Include="MultiNodeTreePickerPropertyConverter.cs" />

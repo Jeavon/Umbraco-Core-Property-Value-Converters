@@ -255,6 +255,7 @@
     <Compile Include="Install\ConfigNameSpaceModifier.cs" />
     <Compile Include="Install\UmbracoEvents.cs" />
     <Compile Include="Models\RelatedLink.cs" />
+    <Compile Include="Models\RelatedLinkBase.cs" />
     <Compile Include="Models\RelatedLinkData.cs" />
     <Compile Include="Models\RelatedLinks.cs" />
     <Compile Include="Models\RelatedLinkType.cs" />

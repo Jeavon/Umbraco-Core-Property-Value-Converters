@@ -136,6 +136,9 @@ namespace Our.Umbraco.PropertyConverters
                             }
                         }
                     }
+                    return dynamicInvocation
+                                ? new DynamicPublishedContentList(multiNodeTreePicker.Where(x => x != null))
+                                : multiNodeTreePicker.Yield().Where(x => x != null);
                 }
                 
                 // return the first nodeId as this is one of the excluded properties that expects a single id

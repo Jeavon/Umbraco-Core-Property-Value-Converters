@@ -252,6 +252,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Events.cs" />
+    <Compile Include="Cache\LocalCache.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Install\ConfigNameSpaceModifier.cs" />
     <Compile Include="Install\UmbracoEvents.cs" />
     <Compile Include="Models\RelatedLink.cs" />

@@ -6,6 +6,9 @@
 //   The multiple media picker property editor converter.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Our.Umbraco.PropertyConverters.Cache;
+
 namespace Our.Umbraco.PropertyConverters
 {
     using System;
@@ -19,7 +22,7 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.PublishedContent;
     using global::Umbraco.Core.PropertyEditors;
-   
+
     using global::Umbraco.Web;
 
     /// <summary>
@@ -142,7 +145,7 @@ namespace Our.Umbraco.PropertyConverters
 
             // single value picker
             var nodeId = (int)source;
-            
+
             return dynamicInvocation ? umbHelper.Media(nodeId) : umbHelper.TypedMedia(nodeId);
         }
 
@@ -205,13 +208,33 @@ namespace Our.Umbraco.PropertyConverters
         /// </returns>
         public bool IsMultipleDataType(int dataTypeId)
         {
+            var cacheKey = string.Format("{0}{1}", PropertyConvertersConstants.Keys.CachePrefix, dataTypeId);
+
+            var cachedValue = LocalCache.GetLocalCacheItem<bool?>(cacheKey);
+            if (cachedValue != null)
+            {
+                return (bool)cachedValue;
+            }
+
             var dts = ApplicationContext.Current.Services.DataTypeService;
+
             var multiPickerPreValue =
                 dts.GetPreValuesCollectionByDataTypeId(dataTypeId)
                     .PreValuesAsDictionary.FirstOrDefault(
                         x => string.Equals(x.Key, "multiPicker", StringComparison.InvariantCultureIgnoreCase)).Value;
 
-            return multiPickerPreValue != null && multiPickerPreValue.Value.TryConvertTo<bool>().Result;
+            var multipleItems = false;
+
+            var attemptConvert = multiPickerPreValue.Value.TryConvertTo<bool>();
+
+            if (attemptConvert.Success)
+            {
+                multipleItems = attemptConvert.Result;
+            }
+
+            LocalCache.InsertLocalCacheItem<bool>(cacheKey, () => multipleItems);
+
+            return multipleItems;
         }
     }
 }

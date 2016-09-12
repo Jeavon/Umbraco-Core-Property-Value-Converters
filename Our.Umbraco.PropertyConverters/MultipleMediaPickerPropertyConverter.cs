@@ -218,10 +218,17 @@ namespace Our.Umbraco.PropertyConverters
 
             var dts = ApplicationContext.Current.Services.DataTypeService;
 
-            var multiPickerPreValue =
-                dts.GetPreValuesCollectionByDataTypeId(dataTypeId)
-                    .PreValuesAsDictionary.FirstOrDefault(
-                        x => string.Equals(x.Key, "multiPicker", StringComparison.InvariantCultureIgnoreCase)).Value;
+            var multiPickerPreValueDictionary = dts.GetPreValuesCollectionByDataTypeId(dataTypeId)
+                .PreValuesAsDictionary.FirstOrDefault(
+                    x => string.Equals(x.Key, "multiPicker", StringComparison.InvariantCultureIgnoreCase));
+
+            // if no prevalue returned, assume multiple as this is the "multiple" media picker, sorry Marc...
+            if (multiPickerPreValueDictionary.Equals(default(KeyValuePair<string, PreValue>)))
+            {
+                return true;
+            }
+
+            var multiPickerPreValue = multiPickerPreValueDictionary.Value;
 
             var multipleItems = false;
 

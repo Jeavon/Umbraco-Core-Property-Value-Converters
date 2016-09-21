@@ -12,6 +12,7 @@
         if (typedMediaPickerSingle != null)
         {
             <p>@typedMediaPickerSingle.Url</p>
+            <p>@typedMediaPickerSingle.GetPropertyValue<string>("umbracoFile")</p>
         }
     }    
 ```

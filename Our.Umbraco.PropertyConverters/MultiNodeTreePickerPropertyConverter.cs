@@ -22,6 +22,7 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Web.Models;
 
     using Our.Umbraco.PropertyConverters.Utilities;
+    using global::Umbraco.Core.Logging;
 
     /// <summary>
     /// The multi node tree picker property editor value converter.
@@ -218,13 +219,25 @@ namespace Our.Umbraco.PropertyConverters
             }
 
             // attempt to get the content
-            var content = contentFetcher(nodeId);
-            if (content != null)
+            try
             {
-                // if we found the content, assign the expected type to the actual type so we don't have to keep looking for other types of content
-                actualType = expectedType;
+                var content = contentFetcher(nodeId);
+                if (content != null)
+                {
+                    // if we found the content, assign the expected type to the actual type so we don't have to keep looking for other types of content
+                    actualType = expectedType;
+                }
+
+                return content;
             }
-            return content;
+            catch (Exception ex)
+            {
+                // we're catching the errors which are thrown from the Umbraco
+                // in our case from: https://github.com/umbraco/Umbraco-CMS/blob/5397f2c53acbdeb0805e1fe39fda938f571d295a/src/Umbraco.Web/Security/MembershipHelper.cs
+                // it's checking for the entity type and the order is content media then member and if membership provider is the custom one then the error will be thrown
+                LogHelper.Error<MultiNodeTreePickerPropertyConverter>(string.Format("Error during fetching IPublishedContent for nodeId: {0}", nodeId), ex);
+            }
+            return null;
         }
 
     }

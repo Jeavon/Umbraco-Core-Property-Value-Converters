@@ -22,6 +22,7 @@ namespace Our.Umbraco.PropertyConverters
     using global::Umbraco.Web.Models;
 
     using Our.Umbraco.PropertyConverters.Utilities;
+    using global::Umbraco.Core.Logging;
 
     /// <summary>
     /// The multi node tree picker property editor value converter.

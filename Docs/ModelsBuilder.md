@@ -10,7 +10,7 @@ When using ModelsBuilder ensure to set the value converters to typed in Web.Conf
 
 ## Example 1 - Multi Node Tree Picker ##
 
-In this example we have two mulitnode tree pickers that instead of a collection of `IPublishedContent` we would like to return collections of our custom models of `PageTile` & `NewsArticlePage`, for all other multi node tree pickers we want them to continue to return `IPublishedContent`
+In this example we have two multinode tree pickers that instead of a collection of `IPublishedContent` we would like to return collections of our custom models of `PageTile` & `NewsArticlePage`, for all other multi node tree pickers we want them to continue to return `IPublishedContent`
 
 ### Generated default models with `IPublishedContent` ###
 

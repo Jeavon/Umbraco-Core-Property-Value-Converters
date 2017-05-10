@@ -4,7 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tnonusc0x47djvj5/branch/v2?svg=true)](https://ci.appveyor.com/project/JeavonLeopold/umbraco-core-property-value-converters/branch/v2)
 
-**Upgrading to Umbraco v7.6?** See here
+**Upgrading to Umbraco v7.6?** See [here](#upgrading-to-umbraco-76)
 
 Umbraco Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters](http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters)
 <br/>Nuget Package: `Install-Package Our.Umbraco.CoreValueConverters`

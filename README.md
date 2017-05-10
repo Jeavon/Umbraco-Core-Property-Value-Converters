@@ -28,10 +28,10 @@ These converters work with both the typed IPublishedContent (Model.Content) and 
 v3 works brilliantly with the **Umbraco ModelsBuilder** that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
 
 ## Upgrading to Umbraco 7.6? ##
-If you upgrading a website using this package to Umbraco v7.6 you will need to un-install it before you upgrade, this is because the package has been included in Umbraco v7.6 Core.
+If you're upgrading a website using this package to Umbraco v7.6 you will need to un-install it before you upgrade, this is because the package has been included in Umbraco v7.6 Core.
 
 Steps are:
-1. Uninstall CoreValueConverters NuGet Package
+1. Un-install the `CoreValueConverters` NuGet Package
 2. Upgrade Umbraco to v7.6+
 3. Enable the `EnablePropertyValueConverters` setting in the `Content` element of `umbracoSettings.config`
 4. If you are using the Models Builder you will need to regenerate your Models

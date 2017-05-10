@@ -1,8 +1,10 @@
-# Umbraco Core Property Value Converters v3#
+# Umbraco Core Property Value Converters v3 
 
 ![](PropertyValueConverters.png)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tnonusc0x47djvj5/branch/v2?svg=true)](https://ci.appveyor.com/project/JeavonLeopold/umbraco-core-property-value-converters/branch/v2)
+
+**Upgrading to Umbraco v7.6?** See here
 
 Umbraco Package: [http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters](http://our.umbraco.org/projects/developer-tools/umbraco-core-property-value-converters)
 <br/>Nuget Package: `Install-Package Our.Umbraco.CoreValueConverters`
@@ -24,6 +26,16 @@ These converters work with both the typed IPublishedContent (Model.Content) and 
     <add key="Our.Umbraco.CoreValueConverters:Mode" value="dynamic" />
 
 v3 works brilliantly with the **Umbraco ModelsBuilder** that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
+
+## Upgrading to Umbraco 7.6? ##
+If you upgrading a website using this package to Umbraco v7.6 you will need to un-install it before you upgrade, this is because the package has been included in Umbraco v7.6 Core.
+
+Steps are:
+1. Uninstall CoreValueConverters NuGet Package
+2. Upgrade Umbraco to v7.6+
+3. Enable the `EnablePropertyValueConverters` setting in the `Content` element of `umbracoSettings.config`
+4. If you are using the Models Builder you will need to regenerate your Models
+5. If you are using the `RelatedLinks` model it has changed namespace to `Umbraco.Web.Models` so you may need to update the namespace in the `/Views/Web.config` and any other code that has referenced `RelatedLinks`
 
 [Change Log](Docs/ChangeLog.md)
 

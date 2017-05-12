@@ -30,7 +30,7 @@
   <!-- NUGET ONLY PROPERTIES -->
   <PropertyGroup>
     <PackageId>Our.Umbraco.CoreValueConverters</PackageId>
-    <UmbracoVersion>[7.4.2,7.6.0]</UmbracoVersion>
+    <UmbracoVersion>7.4.2</UmbracoVersion>
     <Copyright>The Umbraco Community</Copyright>
     <Owners>The Umbraco Community</Owners>
     <IconUrl>https://raw.githubusercontent.com/Jeavon/Umbraco-Core-Property-Value-Converters/master/PropertyValueConverters.png</IconUrl>

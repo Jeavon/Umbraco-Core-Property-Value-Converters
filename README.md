@@ -28,7 +28,7 @@ These converters work with both the typed IPublishedContent (Model.Content) and 
 v3 works brilliantly with the **Umbraco ModelsBuilder** that is included with Umbraco v7.4+. More information on this can be found [here](Docs/ModelsBuilder.md)
 
 ## Upgrading to Umbraco 7.6? ##
-If you're upgrading a website using this package to Umbraco v7.6 you will need to un-install it before you upgrade, this is because the package has been included in Umbraco v7.6 Core.
+If you're upgrading a website using this package to Umbraco v7.6 it is recommend that you un-install this package before you upgrade, this is because the package has been included in Umbraco v7.6 Core. Additionally it should be noted that this package does not currently convert the "v2" pickers such as "Umbraco.ContentPicker2" so any new pickers will not be converted to objects unless `EnablePropertyValueConverters` is enabled.
 
 Steps are:
 1. Un-install the `CoreValueConverters` NuGet Package
